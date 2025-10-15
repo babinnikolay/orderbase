@@ -1,4 +1,5 @@
 import Link from "next/link";
+import * as appConstants from "@/app/_helpers/appConstants";
 
 function Logo() {
   return (
@@ -8,10 +9,10 @@ function Logo() {
       {/*  quality={100}*/}
       {/*  height="60"*/}
       {/*  width="60"*/}
-      {/*  alt={`${process.env.APP_NAME} logo`}*/}
+      {/*  alt={`${appConstants.APP_NAME} logo`}*/}
       {/*/>*/}
       <span className="text-xl font-semibold text-primary-100">
-        {process.env.APP_NAME}
+        {appConstants.APP_NAME}
       </span>
     </Link>
   );

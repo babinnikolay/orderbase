@@ -1,6 +1,6 @@
 import React from "react";
 
-function OrderForm({ children }) {
+function OrderForm() {
   return (
     <>
       <div> Order form</div>

@@ -4,7 +4,7 @@ function Header() {
       <div className="flex  justify-between items-center max-w-7xl mx-auto">
         {/*<Logo />*/}
         {/*<Navigation />*/}
-        Header here
+        Header here 1
       </div>
     </header>
   );

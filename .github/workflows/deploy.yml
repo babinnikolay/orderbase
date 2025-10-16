@@ -6,7 +6,7 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: orderbase-website #${{ github.repository }}
+  IMAGE_NAME: babinnikolay/orderbase-website #${{ github.repository }}
 
 jobs:
   build-and-push:

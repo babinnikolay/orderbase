@@ -25,6 +25,10 @@ function Open({ children, opens: opensWindowName }) {
   return cloneElement(children, { onClick: () => open(opensWindowName) });
 }
 
+function Close({ children }) {
+  cloneElement(children, { onClick: () => open("") });
+}
+
 function Window({ children, name }) {
   const { onClose, openName } = useContext(ModalContext);
 
@@ -55,7 +59,7 @@ function StyledModal({ children, ref }) {
   return (
     <div
       ref={ref}
-      className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-primary-600 shadow-lg p-[3.2rem_4rem] transition-all"
+      className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-primary-600 shadow-lg p-[1.2rem_1rem] transition-all rounded-xl"
     >
       {children}
     </div>
@@ -66,7 +70,7 @@ function Button({ children, onClick }) {
   return (
     <button
       onClick={onClick}
-      className="bg-none border-none p-[0.4rem] transition-all absolute top-[1rem] right-[1rem] hover:text-amber-950"
+      className="bg-none border-none p-[0.4rem] transition-all absolute top-[1.2rem] right-[1.2rem]  hover:text-amber-950"
     >
       {children}
     </button>
@@ -75,5 +79,6 @@ function Button({ children, onClick }) {
 
 Modal.Open = Open;
 Modal.Window = Window;
+Modal.Close = Close;
 
 export default Modal;

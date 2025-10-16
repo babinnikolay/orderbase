@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import Modal from "@/app/_components/Modal";
-import OrderForm from "@/app/_components/Order";
+import OrderForm from "@/app/_components/OrderForm";
 import Button from "@/app/_components/Button";
 
 function NewOrder() {

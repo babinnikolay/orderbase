@@ -1,6 +1,6 @@
 "use client";
 
-import React, { cloneElement, createContext, useContext, useState } from "react";
+import { cloneElement, createContext, useContext, useState } from "react";
 import { createPortal } from "react-dom";
 import { useOutsideClick } from "@/app/hooks/useOutsideClick";
 

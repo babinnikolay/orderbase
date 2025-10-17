@@ -26,3 +26,4 @@ export const sideNavSections = [
     text: "⚙️ Account",
   },
 ];
+export const dateFormat = "dd.MM.yyyy";

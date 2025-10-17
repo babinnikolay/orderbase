@@ -1,22 +1,16 @@
 "use client";
 import React from "react";
-import Modal from "@/app/_components/Modal";
-import OrderForm from "@/app/_components/OrderForm";
-import Button from "@/app/_components/Button";
+import Link from "next/link";
 
 function NewOrder() {
   return (
     <div>
-      <Modal>
-        <Modal.Open opens="order-form">
-          <Button additional={"bg-accent-800 text-primary-200"}>
-            &#43; New order
-          </Button>
-        </Modal.Open>
-        <Modal.Window name="order-form">
-          <OrderForm />
-        </Modal.Window>
-      </Modal>
+      <Link
+        href={`/orders/new`}
+        className="p-1 px-2 rounded-md border border-primary-600 hover:bg-accent-800 bg-accent-700 text-primary-200"
+      >
+        &#43; New order
+      </Link>
     </div>
   );
 }

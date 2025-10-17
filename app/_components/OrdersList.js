@@ -1,44 +1,13 @@
-import OrderLine from "@/app/_components/OrderLine";
+import OrderRow from "@/app/_components/OrderRow";
 import Table from "@/app/_components/Table";
+import { getOrders } from "@/app/_lib/data-service";
 
-const orders = [
-  {
-    date: "2025-10-10",
-    clientName: "ООО Альфа",
-    amount: 300,
-    description: "разработка лэндинговой страницы",
-  },
-  {
-    date: "2025-10-12",
-    clientName: "ИП Сидоров",
-    amount: 150,
-    description: "создание логотипа и брендбука",
-  },
-  {
-    date: "2025-10-15",
-    clientName: "ООО Бета",
-    amount: 500,
-    description: "разработка интернет-магазина",
-  },
-  {
-    date: "2025-10-18",
-    clientName: "АО Гамма",
-    amount: 200,
-    description: "техническая поддержка сайта",
-  },
-  {
-    date: "2025-10-20",
-    clientName: "ИП Козлова",
-    amount: 100,
-    description: "доработка дизайна мобильного приложения",
-  },
-];
-
-export default function OrdersList() {
+export default async function OrdersList() {
+  const orders = await getOrders();
   return (
     <Table>
       {orders.map((order, index) => (
-        <OrderLine key={index} order={order} />
+        <OrderRow key={index} order={order} />
       ))}
     </Table>
   );

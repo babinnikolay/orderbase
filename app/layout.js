@@ -1,11 +1,11 @@
 import "@/app/_styles/globals.css";
 import Sidebar from "@/app/_components/Sidebar";
 import Header from "@/app/_components/Header";
-import * as appContants from "@/app/_helpers/appConstants";
+import * as appConstants from "@/app/_helpers/appConstants";
 
 export const metadata = {
-  title: appContants.APP_NAME,
-  description: appContants.APP_DESCRIPTION,
+  title: appConstants.APP_NAME,
+  description: appConstants.APP_DESCRIPTION,
 };
 
 export default function RootLayout({ children }) {

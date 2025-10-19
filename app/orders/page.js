@@ -3,7 +3,7 @@ import * as appConstants from "@/app/_helpers/appConstants";
 
 export async function generateMetadata() {
   return {
-    title: `Orders * ${appConstants.APP_NAME}`,
+    title: `Orders ${appConstants.TITLE_SEPARATOR} ${appConstants.APP_NAME}`,
   };
 }
 

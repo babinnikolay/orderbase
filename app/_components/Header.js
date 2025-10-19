@@ -1,10 +1,13 @@
+import Image from "next/image";
+
 function Header() {
   return (
-    <header className="border-b border-primary-900 px-8 py-5 bg-primary-800">
-      <div className="flex  justify-between items-center max-w-7xl mx-auto">
-        {/*<Logo />*/}
-        {/*<Navigation />*/}
-        SSL now. Header here
+    <header className="border-b border-primary-700 px-1 py-5 bg-primary-800 flex">
+      <div className="flex items-center w-[100px] h-[100px] relative">
+        <Image src={"/logo.png"} alt="Orderbase logo" layout="fill" />
+      </div>
+      <div className="flex items-center justify-center pl-4 text-6xl font-bold">
+        Orderbase
       </div>
     </header>
   );

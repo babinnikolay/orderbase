@@ -107,3 +107,14 @@ export async function getNewOrder() {
 export async function getClients() {
   return clients.slice();
 }
+
+export async function getClient(id) {
+  return clients.find((client) => client.id === id);
+}
+
+export async function getNewClient() {
+  return {
+    id: "",
+    name: "",
+  };
+}

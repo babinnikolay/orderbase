@@ -9,3 +9,9 @@ export async function saveOrderAction(order) {
   revalidatePath(`/order/${order.id}`);
   redirect("/orders");
 }
+
+export async function saveClientAction(client) {
+  // await saveOrder(order);
+  revalidatePath(`/client/${client.id}`);
+  redirect("/clients");
+}

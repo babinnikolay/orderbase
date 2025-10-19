@@ -11,9 +11,9 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className="bg-primary-950  text-primary-100 min-h-screen flex flex-col relative">
+      <body className="bg-primary-950  text-primary-100 h-screen flex flex-col relative">
         <Header />
-        <main className="grid grid-cols-[220px_1fr]">
+        <main className="grid grid-cols-[220px_1fr] h-full">
           <Sidebar />
 
           {/*<div className="flex-1 px-8 py-12 grid">*/}

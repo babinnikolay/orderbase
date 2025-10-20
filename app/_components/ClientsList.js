@@ -5,12 +5,16 @@ import ClientRow from "@/app/_components/ClientRow";
 
 export default async function ClientsList({ children }) {
   const clients = await getClients();
-  const head = ["ID", "Name", "Actions"];
+  const head = ["Name", "Actions"];
+  const gridCols = "[10fr_1fr]";
+
   return (
-    <Table head={head}>
-      {clients.map((client, index) => (
-        <ClientRow key={index} client={client} />
-      ))}
-    </Table>
+    <div className="m-4 px-4 py-2 rounded-xl border border-primary-600 shadow-lg bg-primary-800">
+      <Table head={head} gridCols={gridCols}>
+        {clients.map((client, index) => (
+          <ClientRow key={index} client={client} gridCols={gridCols} />
+        ))}
+      </Table>
+    </div>
   );
 }

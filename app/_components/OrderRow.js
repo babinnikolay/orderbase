@@ -4,14 +4,16 @@ import Link from "next/link";
 import { format } from "date-fns";
 import { dateFormat } from "@/app/_helpers/appConstants";
 
-export default function OrderRow({ order }) {
+export default function OrderRow({ order, gridCols }) {
   return (
-    <tr className="hover:bg-primary-700 border-b border-primary-700">
-      <td className="p-3">{format(order.date, dateFormat)}</td>
-      <td>{order.client.name}</td>
-      <td>${order.amount}</td>
-      <td>{order.description}</td>
-      <td>
+    <div
+      className={`items-center py-2 grid grid-cols-${gridCols} hover:bg-primary-700 border-b border-primary-700`}
+    >
+      <div>{format(order.date, dateFormat)}</div>
+      <div>{order.client.name}</div>
+      <div>${order.amount}</div>
+      <div>{order.description}</div>
+      <div>
         <ListButtons>
           <Link
             href={`/orders/edit/${order.id}`}
@@ -21,7 +23,7 @@ export default function OrderRow({ order }) {
           </Link>
           <Button additional={"text-amber-600"}>Delete</Button>
         </ListButtons>
-      </td>
-    </tr>
+      </div>
+    </div>
   );
 }

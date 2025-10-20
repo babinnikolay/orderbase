@@ -1,6 +1,82 @@
 import { format } from "date-fns";
 import { revalidatePath } from "next/cache";
 
+const invoices = [
+  {
+    id: "1",
+    date: "2025-10-20",
+    client: {
+      id: "1",
+      name: "ООО Альфа",
+    },
+    total: 1250,
+    description: "some description",
+    paid: false,
+    orders: [
+      {
+        id: "1",
+      },
+      {
+        id: "2",
+      },
+    ],
+  },
+  {
+    id: "2",
+    date: "2025-10-21",
+    client: {
+      id: "2",
+      name: "ИП Иванов",
+    },
+    total: 850,
+    description: "Разработка лендинга",
+    paid: true,
+    orders: [
+      {
+        id: "3",
+      },
+    ],
+  },
+  {
+    id: "3",
+    date: "2025-10-22",
+    client: {
+      id: "3",
+      name: "ООО Бета",
+    },
+    total: 2100,
+    description: "Техническая поддержка за октябрь",
+    paid: false,
+    orders: [
+      {
+        id: "4",
+      },
+      {
+        id: "5",
+      },
+      {
+        id: "6",
+      },
+    ],
+  },
+  {
+    id: "4",
+    date: "2025-10-23",
+    client: {
+      id: "4",
+      name: "ЗАО Гамма",
+    },
+    total: 150,
+    description: "Консультация",
+    paid: true,
+    orders: [
+      {
+        id: "7",
+      },
+    ],
+  },
+];
+
 const orders = [
   {
     id: "1",
@@ -116,5 +192,28 @@ export async function getNewClient() {
   return {
     id: "",
     name: "",
+  };
+}
+
+export async function getInvoices() {
+  return invoices.slice();
+}
+
+export async function getInvoice(id) {
+  return invoices.find((invoice) => invoice.id === id);
+}
+
+export async function getNewInvoice() {
+  return {
+    id: "",
+    date: format(new Date(), "yyyy-MM-dd"),
+    client: {
+      id: "",
+      name: "",
+    },
+    total: 0,
+    description: "",
+    paid: false,
+    orders: [],
   };
 }

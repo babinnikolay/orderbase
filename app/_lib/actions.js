@@ -15,3 +15,9 @@ export async function saveClientAction(client) {
   revalidatePath(`/client/${client.id}`);
   redirect("/clients");
 }
+
+export async function saveInvoiceAction(invoice) {
+  // await saveOrder(order);
+  revalidatePath(`/invoice/${invoice.id}`);
+  redirect("/invoices");
+}

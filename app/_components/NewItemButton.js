@@ -1,16 +1,17 @@
-"use client";
 import React from "react";
 import Link from "next/link";
 
-export default function NewClient() {
+function NewItemButton({ href, title }) {
   return (
     <div>
       <Link
-        href={`/clients/new`}
+        href={href}
         className="p-1 px-2 rounded-md border border-primary-600 hover:bg-accent-800 bg-accent-700 text-primary-200"
       >
-        &#43; New Client
+        &#43; {title}
       </Link>
     </div>
   );
 }
+
+export default NewItemButton;

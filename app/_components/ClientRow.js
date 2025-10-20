@@ -2,12 +2,14 @@ import Button from "@/app/_components/Button";
 import ListButtons from "@/app/_components/ListButtons";
 import Link from "next/link";
 
-export default function ClientRow({ client }) {
+export default function ClientRow({ client, gridCols }) {
   return (
-    <tr className="hover:bg-primary-700 border-b border-primary-700 ">
-      <td className="p-3">{client.id}</td>
-      <td>{client.name}</td>
-      <td>
+    <div
+      className={`grid grid-cols-${gridCols} hover:bg-primary-700 border-b border-primary-700 py-2 items-center`}
+    >
+      {/*<td className="p-3">{client.id}</td>*/}
+      <div>{client.name}</div>
+      <div>
         <ListButtons>
           <Link
             href={`/clients/edit/${client.id}`}
@@ -17,7 +19,7 @@ export default function ClientRow({ client }) {
           </Link>
           <Button additional={"text-amber-600"}>Delete</Button>
         </ListButtons>
-      </td>
-    </tr>
+      </div>
+    </div>
   );
 }

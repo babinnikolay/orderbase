@@ -1,20 +1,25 @@
 import React from "react";
 import { getClients } from "@/app/_lib/data-service";
 import Table from "@/app/_components/Table";
-import ClientRow from "@/app/_components/ClientRow";
+import TableHeader from "@/app/_components/TableHeader";
+import TableRow from "@/app/_components/TableRow";
+import ListButtons from "@/app/_components/ListButtons";
 
-export default async function ClientsList({ children }) {
+export default async function ClientsList() {
   const clients = await getClients();
-  const head = ["Name", "Actions"];
-  const gridCols = "[10fr_1fr]";
 
   return (
-    <div className="m-4 px-4 py-2 rounded-xl border border-primary-600 shadow-lg bg-primary-800">
-      <Table head={head} gridCols={gridCols}>
-        {clients.map((client, index) => (
-          <ClientRow key={index} client={client} gridCols={gridCols} />
-        ))}
-      </Table>
-    </div>
+    <Table>
+      <TableHeader>
+        <div className="flex-1">Client name</div>
+        <div className="flex-none w-32 text-center">Actions</div>
+      </TableHeader>
+      {clients.map((client, index) => (
+        <TableRow key={index}>
+          <div className="flex-1">{client.name}</div>
+          <ListButtons href={`/clients/edit/${client.id}`} />
+        </TableRow>
+      ))}
+    </Table>
   );
 }

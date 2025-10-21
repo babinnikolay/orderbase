@@ -1,20 +1,33 @@
-import OrderRow from "@/app/_components/OrderRow";
-import Table from "@/app/_components/Table";
 import { getOrders } from "@/app/_lib/data-service";
+import TableHeader from "@/app/_components/TableHeader";
+import { format } from "date-fns";
+import { dateFormat } from "@/app/_helpers/appConstants";
+import ListButtons from "@/app/_components/ListButtons";
+import TableRow from "@/app/_components/TableRow";
+import Table from "@/app/_components/Table";
+import React from "react";
 
 export default async function OrdersList() {
   const orders = await getOrders();
-  const head = ["Date", "Client", "Amount", "Description", "Actions"];
-  const foot = { amount: "1250$" };
-  const gridCols = "[1fr_1fr_1fr_4fr_1fr]";
 
   return (
-    <div className="m-4 px-4 py-2 rounded-xl border border-primary-600 shadow-lg bg-primary-800">
-      <Table head={head} foot={foot} gridCols={gridCols}>
-        {orders.map((order, index) => (
-          <OrderRow key={index} order={order} gridCols={gridCols} />
-        ))}
-      </Table>
-    </div>
+    <Table>
+      <TableHeader>
+        <div className="flex-none w-32">Date</div>
+        <div className="flex-none w-60">Client</div>
+        <div className="flex-none w-32">Amount</div>
+        <div className="flex-1">Description</div>
+        <div className="flex-none w-32 text-center">Actions</div>
+      </TableHeader>
+      {orders.map((order, index) => (
+        <TableRow key={index}>
+          <div className="flex-none w-32">{format(order.date, dateFormat)}</div>
+          <div className="flex-none w-60">{order.client.name}</div>
+          <div className="flex-none w-32">{order.amount}</div>
+          <div className="flex-1">{order.description}</div>
+          <ListButtons href={`/orders/edit/${order.id}`} />
+        </TableRow>
+      ))}
+    </Table>
   );
 }

@@ -1,29 +1,15 @@
-import Button from "@/app/_components/Button";
-import ListButtons from "@/app/_components/ListButtons";
-import Link from "next/link";
 import { format } from "date-fns";
 import { dateFormat } from "@/app/_helpers/appConstants";
+import ListButtons from "@/app/_components/ListButtons";
 
-export default function OrderRow({ order, gridCols }) {
+export default function OrderRow({ order, styles }) {
   return (
-    <div
-      className={`items-center py-2 grid grid-cols-${gridCols} hover:bg-primary-700 border-b border-primary-700`}
-    >
-      <div>{format(order.date, dateFormat)}</div>
-      <div>{order.client.name}</div>
-      <div>${order.amount}</div>
-      <div>{order.description}</div>
-      <div>
-        <ListButtons>
-          <Link
-            href={`/orders/edit/${order.id}`}
-            className="p-1 px-2 rounded-md border border-primary-600 hover:bg-accent-800"
-          >
-            Edit
-          </Link>
-          <Button additional={"text-amber-600"}>Delete</Button>
-        </ListButtons>
-      </div>
+    <div className="flex px-1 py-2 items-center rounded-md hover:bg-primary-500">
+      <div className={styles[0]}>{format(order.date, dateFormat)}</div>
+      <div className={styles[1]}>{order.client.name}</div>
+      <div className={styles[2]}>{order.amount}</div>
+      <div className={styles[3]}>{order.description}</div>
+      <ListButtons href={`/orders/edit/${order.id}`} />
     </div>
   );
 }

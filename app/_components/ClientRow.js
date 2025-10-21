@@ -2,13 +2,12 @@ import Button from "@/app/_components/Button";
 import ListButtons from "@/app/_components/ListButtons";
 import Link from "next/link";
 
-export default function ClientRow({ client, gridCols }) {
+export default function ClientRow({ client }) {
   return (
     <div
-      className={`grid grid-cols-${gridCols} hover:bg-primary-700 border-b border-primary-700 py-2 items-center`}
+      className={`flex hover:bg-primary-700 border-b border-primary-700 py-2 items-center`}
     >
-      {/*<td className="p-3">{client.id}</td>*/}
-      <div>{client.name}</div>
+      <div className="flex-1">{client.name}</div>
       <div>
         <ListButtons>
           <Link

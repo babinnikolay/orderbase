@@ -15,9 +15,103 @@ const invoices = [
     orders: [
       {
         id: "1",
+        amount: 50,
+        date: "2025-10-01",
       },
       {
         id: "2",
+        amount: 75,
+        date: "2025-10-02",
+      },
+      {
+        id: "3",
+        amount: 60,
+        date: "2025-10-03",
+      },
+      {
+        id: "4",
+        amount: 80,
+        date: "2025-10-04",
+      },
+      {
+        id: "5",
+        amount: 45,
+        date: "2025-10-05",
+      },
+      {
+        id: "6",
+        amount: 90,
+        date: "2025-10-06",
+      },
+      {
+        id: "7",
+        amount: 55,
+        date: "2025-10-07",
+      },
+      {
+        id: "8",
+        amount: 70,
+        date: "2025-10-08",
+      },
+      {
+        id: "9",
+        amount: 65,
+        date: "2025-10-09",
+      },
+      {
+        id: "10",
+        amount: 85,
+        date: "2025-10-10",
+      },
+      {
+        id: "11",
+        amount: 40,
+        date: "2025-10-11",
+      },
+      {
+        id: "12",
+        amount: 95,
+        date: "2025-10-12",
+      },
+      {
+        id: "13",
+        amount: 50,
+        date: "2025-10-13",
+      },
+      {
+        id: "14",
+        amount: 75,
+        date: "2025-10-14",
+      },
+      {
+        id: "15",
+        amount: 60,
+        date: "2025-10-15",
+      },
+      {
+        id: "16",
+        amount: 80,
+        date: "2025-10-16",
+      },
+      {
+        id: "17",
+        amount: 45,
+        date: "2025-10-17",
+      },
+      {
+        id: "18",
+        amount: 90,
+        date: "2025-10-18",
+      },
+      {
+        id: "19",
+        amount: 55,
+        date: "2025-10-19",
+      },
+      {
+        id: "20",
+        amount: 70,
+        date: "2025-10-20",
       },
     ],
   },
@@ -33,7 +127,9 @@ const invoices = [
     paid: true,
     orders: [
       {
-        id: "3",
+        id: "21",
+        amount: 850,
+        date: "2025-10-20",
       },
     ],
   },
@@ -49,13 +145,19 @@ const invoices = [
     paid: false,
     orders: [
       {
-        id: "4",
+        id: "22",
+        amount: 700,
+        date: "2025-10-10",
       },
       {
-        id: "5",
+        id: "23",
+        amount: 700,
+        date: "2025-10-15",
       },
       {
-        id: "6",
+        id: "24",
+        amount: 700,
+        date: "2025-10-20",
       },
     ],
   },
@@ -71,7 +173,9 @@ const invoices = [
     paid: true,
     orders: [
       {
-        id: "7",
+        id: "25",
+        amount: 150,
+        date: "2025-10-22",
       },
     ],
   },
@@ -216,4 +320,8 @@ export async function getNewInvoice() {
     paid: false,
     orders: [],
   };
+}
+
+export async function getAvailableOrders() {
+  return orders.slice(0, 3);
 }

@@ -4,27 +4,27 @@ export const APP_DESCRIPTION = "Create bills";
 export const sideNavSections = [
   {
     href: "/",
-    text: "📊 Dashboard"
+    text: "📊 Dashboard",
   },
   {
     href: "/orders",
-    text: "📋 Orders"
+    text: "📋 Orders",
   },
   {
     href: "/invoices",
-    text: "🧾 Invoices"
+    text: "🧾 Invoices",
   },
   {
     href: "/clients",
-    text: "👥 Clients"
+    text: "👥 Clients",
   },
   {
     href: "/reports",
-    text: "📈 Reports"
+    text: "📈 Reports",
   },
   {
     href: "/account",
-    text: "⚙️ Account"
-  }
+    text: "⚙️ Account",
+  },
 ];
 export const dateFormat = "dd.MM.yyyy";

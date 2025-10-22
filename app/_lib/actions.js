@@ -1,6 +1,6 @@
 "use server";
 
-import { saveOrder } from "@/app/_lib/data-service";
+import { getAvailableOrders, saveOrder } from "@/app/_lib/data-service";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 
@@ -20,4 +20,8 @@ export async function saveInvoiceAction(invoice) {
   // await saveOrder(order);
   revalidatePath(`/invoice/${invoice.id}`);
   redirect("/invoices");
+}
+
+export async function getFreeOrdersAction() {
+  return await getAvailableOrders();
 }

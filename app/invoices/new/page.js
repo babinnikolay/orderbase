@@ -2,24 +2,16 @@ import React from "react";
 import Link from "next/link";
 import SectionLabel from "@/app/_components/SectionLabel";
 import SectionLine from "@/app/_components/SectionLine";
-import { getClients, getInvoice } from "@/app/_lib/data-service";
-import { dateFormat } from "@/app/_helpers/appConstants";
-import { format } from "date-fns";
+import { getClients, getNewInvoice } from "@/app/_lib/data-service";
 import InvoiceForm from "@/app/_components/InvoiceForm";
-import InvoiceOrdersList from "@/app/_components/InvoiceOrdersList";
 
-export default async function Page({ params }) {
-  const [invoice, clients] = await Promise.all([
-    getInvoice(await params.invoiceId),
-    getClients(),
-  ]);
+export default async function Page() {
+  const [invoice, clients] = await Promise.all([getNewInvoice(), getClients()]);
 
   return (
     <div>
       <SectionLine>
-        <SectionLabel>
-          Edit invoice #{invoice?.id} from {format(invoice.date, dateFormat)}
-        </SectionLabel>
+        <SectionLabel>New invoice</SectionLabel>
         <Link
           className="p-1 rounded-md border border-primary-600 hover:bg-accent-800"
           href={"/invoices"}
@@ -28,7 +20,7 @@ export default async function Page({ params }) {
         </Link>
       </SectionLine>
       <InvoiceForm invoice={invoice} clients={clients}>
-        <InvoiceOrdersList invoice={invoice} />
+        {/*<OrdersChoiceList invoice={invoice} />*/}
       </InvoiceForm>
     </div>
   );

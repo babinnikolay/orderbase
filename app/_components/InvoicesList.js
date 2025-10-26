@@ -26,7 +26,7 @@ export default async function InvoicesList() {
           </div>
           <div className="flex-none w-60">{invoice.client.name}</div>
           <div className="flex-none w-32">{invoice.total}</div>
-          <div className="flex-none w-20 text-center items-center flex justify-center ">
+          <div className="flex-none w-20 text-center items-left flex justify-start ">
             <div
               className={` border border-primary-700 rounded-md w-fit p-1 ${invoice.paid ? "bg-green-800" : "bg-accent-800"}`}
             >

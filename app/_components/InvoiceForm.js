@@ -1,10 +1,15 @@
 "use client";
-import { useTransition } from "react";
-import SubmitButton from "@/app/_components/SubmitButton";
+import React, { useState, useTransition } from "react";
+import SaveButton from "@/app/_components/SaveButton";
 import { saveInvoiceAction } from "@/app/_lib/actions";
+import SelectClient from "@/app/_components/SelectClient";
+import SingleDatePicker from "@/app/_components/SingleDatePicker";
+import SetPaidButton from "@/app/_components/SetPaidButton";
 
 function InvoiceForm({ invoice, clients, children }) {
   const [isPending, startTransition] = useTransition();
+  const [date, setDate] = useState(invoice.date);
+  const [paid, setPaid] = useState(invoice.paid);
 
   if (!invoice) return;
 
@@ -29,60 +34,23 @@ function InvoiceForm({ invoice, clients, children }) {
     <>
       <form
         action={handleSubmit}
-        className="m-4 p-4 rounded-xl border border-primary-600 shadow-lg bg-primary-800"
+        className="m-4 p-4 rounded-xl border border-primary-600 shadow-lg bg-primary-800 space-y-4"
       >
-        <div className="pb-2 flex flex-col">
-          <label htmlFor="client-id" className="py-2">
-            Client
-          </label>
-          <select
-            name="client-id"
-            id="client-id"
-            className=" px-2 py-2 bg-primary-300 text-primary-800 w-1/2 shadow-sm rounded-xl"
-            defaultValue={invoice.client.id}
-          >
-            {clients.map((client) => (
-              <option key={client.id} value={client.id}>
-                {client.name}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div className="flex flex-row gap-5 w-1/2">
-          <div className="space-y-2">
-            <label htmlFor="invoice-date">Date</label>
-            <input
-              name="invoice-date"
-              type="date"
-              id="invoice-date"
-              className="px-5 py-3 bg-primary-300 text-primary-800 w-full shadow-sm rounded-xl"
-              defaultValue={invoice.date}
-            />
+        <div className="flex flex-row gap-4">
+          <SelectClient clients={clients} defaultId={invoice.client.id} />
+          <div className="flex flex-col w-40">
+            <SingleDatePicker date={date} onChangeDate={setDate} />
           </div>
-          <div className="space-y-2">
-            <label htmlFor="invoice-amount">Total</label>
-            <input
-              name="invoice-total"
-              type="number"
-              readOnly
-              id="invoice-total"
-              className="px-5 py-3 bg-primary-300 text-primary-800 w-full shadow-sm rounded-xl"
-              defaultValue={invoice.total}
-            />
-          </div>
-          <div className="flex gap-4 pt-7 pl-3 items-center">
-            <input
-              name="invoice-paid"
-              type="checkbox"
-              id="invoice-paid"
-              className="w-4 h-4 transform scale-150"
-              defaultValue={invoice.paid}
-            />
-            <label htmlFor="invoice-paid">Paid</label>
+          <div className="flex flex-col h-[82px]">
+            <SetPaidButton paid={paid} onClick={() => setPaid(!paid)} />
           </div>
         </div>
-        <div className="space-y-2 py-2">{children}</div>
-        <div className="space-y-2 py-2">
+
+        <div>
+          <label>Orders</label>
+          <div className="space-y-2 py-2">{children}</div>
+        </div>
+        <div className="space-y-2">
           <label htmlFor="invoice-description">Description</label>
           <textarea
             name="invoice-description"
@@ -92,11 +60,12 @@ function InvoiceForm({ invoice, clients, children }) {
             defaultValue={invoice.description}
           />
         </div>
+
         <input type="hidden" value={invoice.id} name="invoice-id" />
-        <div className="flex justify-end pt-3 gap-3">
-          <SubmitButton pendingLabel={"Saving..."}>
+        <div className="flex justify-end pt-3 gap-3 items-center ">
+          <SaveButton pendingLabel={"Saving..."}>
             {invoice.id ? "Save and close" : "Create and close"}
-          </SubmitButton>
+          </SaveButton>
         </div>
       </form>
     </>

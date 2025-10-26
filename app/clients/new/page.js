@@ -1,9 +1,9 @@
 import React from "react";
-import Link from "next/link";
 import SectionLabel from "@/app/_components/SectionLabel";
 import SectionLine from "@/app/_components/SectionLine";
 import { getNewClient } from "@/app/_lib/data-service";
 import ClientForm from "@/app/_components/ClientForm";
+import BackButton from "@/app/_components/BackButton";
 
 export default async function Page() {
   const client = await getNewClient();
@@ -12,12 +12,7 @@ export default async function Page() {
     <div>
       <SectionLine>
         <SectionLabel>New client</SectionLabel>
-        <Link
-          className="p-1 rounded-md border border-primary-600 hover:bg-accent-800"
-          href={"/clients"}
-        >
-          &larr; Orders list
-        </Link>
+        <BackButton href="/clients" text="Clients list" />
       </SectionLine>
       <ClientForm client={client} />
     </div>

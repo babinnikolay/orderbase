@@ -3,7 +3,7 @@ import Button from "@/app/_components/Button";
 import { BadgeMinus, Plus, Save } from "lucide-react";
 import AddOrdersList from "@/app/_components/AddOrdersList";
 
-function AddOrders({ chosenOrders, setChosenOrders }) {
+function AddOrders({ chosenOrders, addOrders }) {
   const [addingMode, setAddingMode] = useState(false);
   const [count, setCount] = useState(0);
   const [newOrders, setNewOrders] = useState([]);
@@ -30,11 +30,11 @@ function AddOrders({ chosenOrders, setChosenOrders }) {
               onClick={() => {
                 if (addingMode) setCount(0);
                 setAddingMode(!addingMode);
-                setChosenOrders([...chosenOrders, ...newOrders]);
+                addOrders(newOrders);
                 setNewOrders([]);
               }}
             >
-              <div className="flex items-center justify-center">
+              <div className="flex items-center justify-center gap-1">
                 <Save /> Add {count ? `(${count})` : ""}
               </div>
             </Button>
@@ -45,7 +45,7 @@ function AddOrders({ chosenOrders, setChosenOrders }) {
                 setNewOrders([]);
               }}
             >
-              <div className="flex items-center justify-center">
+              <div className="flex items-center justify-center gap-1">
                 <BadgeMinus /> Cancel
               </div>
             </Button>

@@ -1,6 +1,6 @@
 "use client";
 import { useTransition } from "react";
-import SubmitButton from "@/app/_components/SubmitButton";
+import SaveButton from "@/app/_components/SaveButton";
 import { saveClientAction } from "@/app/_lib/actions";
 
 function ClientForm({ client }) {
@@ -50,9 +50,9 @@ function ClientForm({ client }) {
           </div>
           <input type="hidden" value={client.id} name="order-id" />
           <div className="flex justify-end pt-3 gap-3">
-            <SubmitButton pendingLabel={"Saving..."}>
+            <SaveButton pendingLabel={"Saving..."}>
               {client.id ? "Save and close" : "Create and close"}
-            </SubmitButton>
+            </SaveButton>
           </div>
         </div>
       </form>

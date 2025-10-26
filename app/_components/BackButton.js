@@ -1,18 +1,18 @@
 import React from "react";
 import Link from "next/link";
-import { Plus } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 
-function NewItemButton({ href, title }) {
+function BackButton({ href, text }) {
   return (
     <Link
-      href={href}
       className="p-1 rounded-md border border-primary-600 hover:bg-primary-700 bg-primary-800"
+      href={href}
     >
       <div className="flex items-center justify-center gap-2 p-1">
-        <Plus /> {title}
+        <ArrowLeft /> <span>{text}</span>
       </div>
     </Link>
   );
 }
 
-export default NewItemButton;
+export default BackButton;

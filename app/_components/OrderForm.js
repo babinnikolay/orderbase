@@ -1,10 +1,13 @@
 "use client";
-import { useTransition } from "react";
-import SubmitButton from "@/app/_components/SubmitButton";
+import React, { useState, useTransition } from "react";
+import SaveButton from "@/app/_components/SaveButton";
 import { saveOrderAction } from "@/app/_lib/actions";
+import SelectClient from "@/app/_components/SelectClient";
+import SingleDatePicker from "@/app/_components/SingleDatePicker";
 
 function OrderForm({ order, clients }) {
   const [isPending, startTransition] = useTransition();
+  const [date, setDate] = useState(order.date);
 
   if (!order) return;
 
@@ -27,43 +30,24 @@ function OrderForm({ order, clients }) {
     <>
       <form
         action={handleSubmit}
-        className="m-4 p-4 rounded-xl border border-primary-600 shadow-lg bg-primary-800"
+        className="mx-4 p-4 rounded-xl border border-primary-600 shadow-lg bg-primary-800 space-y-4"
       >
-        <div className="pb-2 flex flex-col">
-          <label htmlFor="client-id" className="py-2">
-            Client
-          </label>
-          <select
-            name="client-id"
-            id="client-id"
-            className=" px-2 py-2 bg-primary-300 text-primary-800 w-1/2 shadow-sm rounded-xl"
-            defaultValue={order.client.id}
-          >
-            {clients.map((client) => (
-              <option key={client.id} value={client.id}>
-                {client.name}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div className="flex flex-row gap-5 w-1/2">
-          <div className="space-y-2">
-            <label htmlFor="order-date">Date</label>
-            <input
-              name="order-date"
-              type="date"
-              id="order-date"
-              className="px-5 py-3 bg-primary-300 text-primary-800 w-full shadow-sm rounded-xl"
-              defaultValue={order.date}
-            />
+        <div className="flex flex-row gap-4">
+          <SelectClient clients={clients} defaultId={order.client.id} />
+          <div className="flex flex-col w-64">
+            <SingleDatePicker date={date} onChangeDate={setDate} />
           </div>
-          <div className="space-y-2">
-            <label htmlFor="order-amount">Amount</label>
+        </div>
+        <div className="flex flex-row gap-4">
+          <div className="w-64 py-2 space-y-2">
+            <label htmlFor="order-amount" className="py-2">
+              Amount
+            </label>
             <input
               name="order-amount"
               type="number"
               id="order-amount"
-              className="px-5 py-3 bg-primary-300 text-primary-800 w-full shadow-sm rounded-xl"
+              className="bg-primary-300 text-primary-800 w-full rounded-xl p-2"
               defaultValue={order.amount}
             />
           </div>
@@ -80,10 +64,10 @@ function OrderForm({ order, clients }) {
           />
         </div>
         <input type="hidden" value={order.id} name="order-id" />
-        <div className="flex justify-end pt-3 gap-3">
-          <SubmitButton pendingLabel={"Saving..."}>
+        <div className="flex justify-end">
+          <SaveButton pendingLabel={"Saving..."}>
             {order.id ? "Save and close" : "Create and close"}
-          </SubmitButton>
+          </SaveButton>
         </div>
       </form>
     </>

@@ -3,7 +3,7 @@ import Button from "@/app/_components/Button";
 import { BadgeMinus, Plus, Save } from "lucide-react";
 import AddOrdersList from "@/app/_components/AddOrdersList";
 
-function AddOrders({ chosenOrders, addOrders }) {
+function AddOrders({ addOrders }) {
   const [addingMode, setAddingMode] = useState(false);
   const [count, setCount] = useState(0);
   const [newOrders, setNewOrders] = useState([]);

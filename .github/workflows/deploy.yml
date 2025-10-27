@@ -12,7 +12,7 @@ jobs:
   build-and-push:
     runs-on: ubuntu-latest
     env:
-      DATABASE_URL: postgresql://test:test@localhost:5432/test
+      DATABASE_URL: postgresql://${{secrets.DB_USER}}:${{secrets.DB_PASSWORD}}@localhost:5432/${{secrets.DB_NAME}}
     permissions:
       contents: read
       packages: write
@@ -41,20 +41,7 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      # ✅ ШАГ 1: БИЛД ОБРАЗА
-      - name: Build Docker image
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          file: ./Dockerfile
-          push: false
-          tags: |
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-
-      - name: Push to GitHub Container Registry
+      - name: Build and Push Docker image
         uses: docker/build-push-action@v5
         with:
           context: .
@@ -63,6 +50,10 @@ jobs:
           tags: |
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          build-args: |
+            DATABASE_URL: postgresql://${{secrets.DB_USER}}:${{secrets.DB_PASSWORD}}@localhost:5432/${{secrets.DB_NAME}}
 
   deploy:
     needs: build-and-push

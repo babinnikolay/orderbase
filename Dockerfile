@@ -4,6 +4,9 @@ WORKDIR /app
 COPY package*.json ./
 COPY prisma ./prisma/
 
+ARG DATABASE_URL
+ENV DATABASE_URL=$DATABASE_URL
+
 RUN npm ci
 RUN npx prisma generate
 

@@ -4,8 +4,7 @@ WORKDIR /app
 COPY package*.json ./
 COPY prisma ./prisma/
 
-ARG DATABASE_URL
-ENV DATABASE_URL=$DATABASE_URL
+ENV DATABASE_URL=postgresql://user:pass@localhost:5432/db
 
 RUN npm ci
 RUN npx prisma generate
@@ -17,8 +16,7 @@ FROM node:18-alpine AS production
 WORKDIR /app
 
 ENV NODE_ENV=production
-ARG DATABASE_URL
-ENV DATABASE_URL=$DATABASE_URL
+ENV DATABASE_URL=postgresql://user:pass@localhost:5432/db
 
 COPY --from=builder /app/.next ./.next
 COPY --from=builder /app/public ./public

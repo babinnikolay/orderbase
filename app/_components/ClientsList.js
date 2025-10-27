@@ -8,6 +8,8 @@ import ListButtons from "@/app/_components/ListButtons";
 export default async function ClientsList() {
   const clients = await getClients();
 
+  console.log("clients render");
+
   return (
     <Table>
       <TableHeader>

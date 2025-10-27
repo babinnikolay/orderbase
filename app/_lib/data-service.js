@@ -1,3 +1,5 @@
+"use server";
+
 import { format } from "date-fns";
 import { revalidatePath } from "next/cache";
 import { prisma } from "../_lib/prisma";

@@ -1,14 +1,13 @@
 import React from "react";
-import { getClients } from "@/app/_lib/data-service";
 import Table from "@/app/_components/Table";
 import TableHeader from "@/app/_components/TableHeader";
 import TableRow from "@/app/_components/TableRow";
 import ListButtons from "@/app/_components/ListButtons";
 
 export default async function ClientsList() {
-  const clients = await getClients();
-
-  console.log("clients render");
+  const { PrismaClient } = await import("@prisma/client");
+  const prisma = new PrismaClient();
+  const clients = await prisma.client.findMany();
 
   return (
     <Table>

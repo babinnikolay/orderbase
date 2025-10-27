@@ -55,6 +55,10 @@ jobs:
           build-args: |
             DATABASE_URL: postgresql://${{secrets.DB_USER}}:${{secrets.DB_PASSWORD}}@localhost:5432/${{secrets.DB_NAME}}
 
+      - name: Cleanup old images
+        run: |
+          docker image prune -a -f
+
   deploy:
     needs: build-and-push
     runs-on: ubuntu-latest

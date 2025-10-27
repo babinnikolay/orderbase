@@ -21,6 +21,16 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install dependencies and generate Prisma
+        run: |
+            npm ci
+            npx prisma generate
+
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 

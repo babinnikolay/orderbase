@@ -1,6 +1,10 @@
 "use server";
 
-import { getAvailableOrders, saveOrder } from "@/app/_lib/data-service";
+import {
+  getAvailableOrders,
+  saveClient,
+  saveOrder,
+} from "@/app/_lib/data-service";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 
@@ -11,7 +15,7 @@ export async function saveOrderAction(order) {
 }
 
 export async function saveClientAction(client) {
-  // await saveOrder(order);
+  await saveClient(client);
   revalidatePath(`/client/${client.id}`);
   redirect("/clients");
 }

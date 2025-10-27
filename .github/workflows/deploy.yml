@@ -67,13 +67,36 @@ jobs:
           script: |
             cd /home/deploy
             
+            cat > .env << EOF
+            # Database
+            DB_NAME=${{ secrets.DB_NAME }}
+            DB_USER=${{ secrets.DB_USER }}
+            DB_PASSWORD=${{ secrets.DB_PASSWORD }}
+            DATABASE_URL=postgresql://${{ secrets.DB_USER }}:${{ secrets.DB_PASSWORD }}@postgres:5432/${{ secrets.DB_NAME }}
+            
+            NODE_ENV=production
+            EOF
+            
+            chmod 600 .env
+            
+            mkdir -p postgres/backups
+            
             # Логинимся в GHCR
             echo "${{ secrets.GHCR_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
             
+            docker compose down
+            
             # Скачиваем новый образ
-            docker compose pull nextjs-app
+            docker compose pull
             
             # Перезапускаем контейнер
-            docker compose up -d nextjs-app
+            docker compose up -d
+            
+            sleep 10
+            
+            echo "Checking database migrations..."
+            docker compose exec -T nextjs-app npx prisma migrate status
+            
+            echo "✅ Production deployment with database completed!"
             
             echo "✅ Деплой завершен!"

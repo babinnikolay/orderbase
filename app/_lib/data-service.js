@@ -1,5 +1,6 @@
 import { format } from "date-fns";
 import { revalidatePath } from "next/cache";
+import { prisma } from "../_lib/prisma";
 
 const invoices = [
   {
@@ -234,29 +235,6 @@ const orders = [
   },
 ];
 
-const clients = [
-  {
-    id: "1",
-    name: "ООО Альфа",
-  },
-  {
-    id: "2",
-    name: "ИП Сидоров",
-  },
-  {
-    id: "3",
-    name: "ООО Бета",
-  },
-  {
-    id: "4",
-    name: "АО Гамма",
-  },
-  {
-    id: "5",
-    name: "ИП Козлова",
-  },
-];
-
 export async function getOrders() {
   return orders.slice();
 }
@@ -268,6 +246,11 @@ export async function getOrder(id) {
 export async function saveOrder(order) {
   if (!order.id) order.id = Math.max(...orders.map((order) => order.id)) + 1;
   orders.push(order);
+  revalidatePath("/orders");
+}
+
+export async function saveClient(client) {
+  await prisma.client.create({ data: { name: client.name } });
   revalidatePath("/orders");
 }
 
@@ -285,7 +268,7 @@ export async function getNewOrder() {
 }
 
 export async function getClients() {
-  return clients.slice();
+  return await prisma.client.findMany();
 }
 
 export async function getClient(id) {

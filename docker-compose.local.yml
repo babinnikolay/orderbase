@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15
+    container_name: postgres-local
+    environment:
+      POSTGRES_DB: orderbase_dev
+      POSTGRES_USER: orderbase_user
+      POSTGRES_PASSWORD: dev_password_123
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_local_data:/var/lib/postgresql/data
+      - ./postgres/init:/docker-entrypoint-initdb.d  # Для init скриптов
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U orderbase_user -d orderbase_dev"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres_local_data:

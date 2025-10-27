@@ -1,7 +1,7 @@
 import React from "react";
 
-function Account({ children }) {
+function Page({ children }) {
   return <div> {children} </div>;
 }
 
-export default Account;
+export default Page;

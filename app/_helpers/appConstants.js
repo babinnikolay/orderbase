@@ -24,7 +24,7 @@ export const sideNavSections = [
   },
   {
     href: "/account",
-    text: "⚙️ Account",
+    text: "⚙️ Page",
   },
 ];
 export const dateFormat = "dd.MM.yyyy";

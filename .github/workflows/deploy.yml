@@ -11,6 +11,8 @@ env:
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
+    env:
+      DATABASE_URL: postgresql://test:test@localhost:5432/test
     permissions:
       contents: read
       packages: write
@@ -42,7 +44,6 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-      # ✅ ШАГ 2: ПУШ В GHCR
       - name: Push to GitHub Container Registry
         uses: docker/build-push-action@v5
         with:

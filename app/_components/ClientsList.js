@@ -7,7 +7,12 @@ import ListButtons from "@/app/_components/ListButtons";
 export default async function ClientsList() {
   const { PrismaClient } = await import("@prisma/client");
   const prisma = new PrismaClient();
-  const clients = await prisma.client.findMany();
+  let clients = [];
+  try {
+    clients = await prisma.client.findMany();
+  } catch (err) {
+    console.error(err);
+  }
 
   return (
     <Table>

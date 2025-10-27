@@ -268,7 +268,12 @@ export async function getNewOrder() {
 }
 
 export async function getClients() {
-  return await prisma.client.findMany();
+  try {
+    return await prisma.client.findMany();
+  } catch (error) {
+    console.error("Database connection failed during build:", error);
+    return [];
+  }
 }
 
 export async function getClient(id) {

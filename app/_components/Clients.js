@@ -17,6 +17,8 @@ export default async function Clients() {
     console.error(err);
   }
 
+  console.log(clients);
+
   return (
     <div>
       <SectionLine>

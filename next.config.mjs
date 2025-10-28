@@ -13,12 +13,6 @@ const nextConfig = {
       },
     ],
   },
-  logging: {
-    fetches: {
-      fullUrl: true,
-    },
-  },
-  productionBrowserSourceMaps: true,
 };
 
 export default nextConfig;

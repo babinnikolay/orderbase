@@ -271,29 +271,17 @@ export async function getNewOrder() {
 
 export async function getClients() {
   try {
-    console.log("🟡 getClients: Starting database query...");
-    console.log("🟡 DATABASE_URL exists:", !!process.env.DATABASE_URL);
-    console.log("🟡 DATABASE_URL:", process.env.DATABASE_URL);
-
-    const clients = await prisma.client.findMany();
-
-    console.log(
-      "🟢 getClients: Query successful, found:",
-      clients.length,
-      "clients",
-    );
-    console.log("🟢 First client:", clients[0] || "No clients found");
-
-    return clients;
+    return await prisma.client.findMany();
   } catch (error) {
-    console.error("🔴 getClients: Database error:", error.message);
-    console.error("🔴 Error details:", error);
     return [];
   }
 }
 
 export async function getClient(id) {
-  return clients.find((client) => client.id === id);
+  return prisma.client.findUnique(
+    {
+      where: {id}
+    })
 }
 
 export async function getNewClient() {

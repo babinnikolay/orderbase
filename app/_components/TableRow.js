@@ -2,8 +2,10 @@ import React from "react";
 
 function TableRow({ children }) {
   return (
-    <div className="flex px-1 py-2 items-center rounded-t-lg hover:bg-primary-500 border-primary-700 border-b last:border-b-0">
-      {children}
+      <div className="border-primary-700 border-b   last:border-b-0">
+        <div className="px-1 py-2 flex rounded-lg items-center hover:bg-primary-500 ">
+        {children}
+      </div>
     </div>
   );
 }

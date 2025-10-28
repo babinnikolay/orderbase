@@ -5,6 +5,8 @@ import SectionLine from "@/app/_components/SectionLine";
 import { getClients, getNewOrder } from "@/app/_lib/data-service";
 import BackButton from "@/app/_components/BackButton";
 
+export const revalidate = 0;
+
 export default async function Page() {
   const [order, clients] = await Promise.all([getNewOrder(), getClients()]);
 

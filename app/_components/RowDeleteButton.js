@@ -1,8 +1,13 @@
+"use client";
+
 import React from "react";
 
-function RowDeleteButton() {
+function RowDeleteButton({ onClick }) {
   return (
-    <button className="p-1 px-2 rounded-md border border-primary-600 hover:bg-accent-800 hover:text-accent-400">
+    <button
+      onClick={onClick}
+      className="p-1 px-2 rounded-md border border-primary-600 hover:bg-accent-800 hover:text-accent-400"
+    >
       Delete
     </button>
   );

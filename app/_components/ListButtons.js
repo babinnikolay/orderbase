@@ -1,8 +1,19 @@
-import React from "react";
-import Link from "next/link";
-import RowDeleteButton from "@/app/_components/RowDeleteButton";
+"use client";
 
-function ListButtons({ href }) {
+import React, { startTransition } from "react";
+import Link from "next/link";
+import { deleteClientAction } from "@/app/_lib/actions";
+import Modal from "@/app/_components/Modal";
+import RowDeleteButton from "@/app/_components/RowDeleteButton";
+import DeleteForm from "@/app/_components/DeleteForm";
+
+function handleDelete(id) {
+  startTransition(async () => {
+    await deleteClientAction(id);
+  });
+}
+
+function ListButtons({ href, id, name }) {
   return (
     <div className="flex justify-end gap-2">
       <Link
@@ -11,7 +22,14 @@ function ListButtons({ href }) {
       >
         Edit
       </Link>
-      <RowDeleteButton />
+      <Modal>
+        <Modal.Open opens={"delete-window"}>
+          <RowDeleteButton />
+        </Modal.Open>
+        <Modal.Window name={"delete-window"}>
+          <DeleteForm onConfirm={() => handleDelete(id)}>{name}</DeleteForm>
+        </Modal.Window>
+      </Modal>
     </div>
   );
 }

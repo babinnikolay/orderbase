@@ -5,7 +5,6 @@ import NewItemButton from "@/app/_components/NewItemButton";
 import ClientsList from "@/app/_components/ClientsList";
 
 export default async function Clients() {
-
   return (
     <div>
       <SectionLine>

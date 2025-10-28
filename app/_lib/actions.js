@@ -1,6 +1,7 @@
 "use server";
 
 import {
+  deleteClient,
   getAvailableOrders,
   saveClient,
   saveOrder,
@@ -18,6 +19,11 @@ export async function saveClientAction(client) {
   await saveClient(client);
   revalidatePath(`/client/${client.id}`);
   redirect("/clients");
+}
+
+export async function deleteClientAction(id) {
+  await deleteClient(id);
+  revalidatePath(`/clients`);
 }
 
 export async function saveInvoiceAction(invoice) {

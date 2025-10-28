@@ -39,7 +39,7 @@ function Window({ children, name }) {
   return createPortal(
     <Overlay>
       <StyledModal ref={modalRef}>
-        <Button onClick={() => onClose()}>&times;</Button>
+        {/*<Button onClick={() => onClose()}>&times;</Button>*/}
         <div>{cloneElement(children, { onCloseModal: onClose })}</div>
       </StyledModal>
     </Overlay>,
@@ -49,7 +49,7 @@ function Window({ children, name }) {
 
 function Overlay({ children }) {
   return (
-    <div className="fixed top-0 left-0 w-full h-full z-[1000] bg-blue-200 bg-opacity-50 backdrop-blur-sm">
+    <div className="fixed top-0 left-0 w-full h-full z-[1000] bg-primary-500 bg-opacity-50 backdrop-blur-sm">
       {children}
     </div>
   );

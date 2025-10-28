@@ -277,11 +277,19 @@ export async function getClients() {
   }
 }
 
+export async function deleteClient(id) {
+  try {
+    await prisma.client.delete({ where: { id } });
+    revalidatePath("/clients");
+  } catch (error) {
+    throw error;
+  }
+}
+
 export async function getClient(id) {
-  return prisma.client.findUnique(
-    {
-      where: {id}
-    })
+  return prisma.client.findUnique({
+    where: { id },
+  });
 }
 
 export async function getNewClient() {

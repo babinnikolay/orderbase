@@ -3,16 +3,12 @@ import Table from "@/app/_components/Table";
 import TableHeader from "@/app/_components/TableHeader";
 import TableRow from "@/app/_components/TableRow";
 import ListButtons from "@/app/_components/ListButtons";
+import { getClients } from "@/app/_lib/data-service";
+
+export const dynamic = "force-dynamic";
 
 export default async function ClientsList() {
-  const { PrismaClient } = await import("@prisma/client");
-  const prisma = new PrismaClient();
-  let clients = [];
-  try {
-    clients = await prisma.client.findMany();
-  } catch (err) {
-    console.error(err);
-  }
+  const clients = await getClients();
 
   return (
     <Table>

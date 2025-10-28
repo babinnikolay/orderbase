@@ -2,7 +2,7 @@ import React from "react";
 import * as appConstants from "@/app/_helpers/appConstants";
 import Clients from "@/app/_components/Clients";
 
-export const revalidate = 20;
+export const revalidate = 0;
 
 export async function generateMetadata() {
   return {
@@ -11,5 +11,5 @@ export async function generateMetadata() {
 }
 
 export default async function Page() {
-  return <Clients />
+  return <Clients />;
 }

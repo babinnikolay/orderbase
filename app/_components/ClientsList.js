@@ -5,8 +5,6 @@ import TableRow from "@/app/_components/TableRow";
 import ListButtons from "@/app/_components/ListButtons";
 import { getClients } from "@/app/_lib/data-service";
 
-export const dynamic = "force-dynamic";
-
 export default async function ClientsList() {
   const clients = await getClients();
 

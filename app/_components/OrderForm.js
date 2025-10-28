@@ -6,7 +6,7 @@ import SelectClient from "@/app/_components/SelectClient";
 import SingleDatePicker from "@/app/_components/SingleDatePicker";
 
 function OrderForm({ order, clients }) {
-  const [startTransition] = useTransition();
+  const [_, startTransition] = useTransition();
   const [date, setDate] = useState(order.date);
 
   if (!order) return;

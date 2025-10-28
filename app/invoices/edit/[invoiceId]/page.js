@@ -7,6 +7,8 @@ import { format } from "date-fns";
 import InvoiceForm from "@/app/_components/InvoiceForm";
 import BackButton from "@/app/_components/BackButton";
 
+export const revalidate = 0;
+
 export default async function Page({ params }) {
   const [invoice, clients] = await Promise.all([
     getInvoice(Number(await params.invoiceId)),

@@ -7,6 +7,8 @@ import { dateFormat } from "@/app/_helpers/appConstants";
 import { format } from "date-fns";
 import BackButton from "@/app/_components/BackButton";
 
+export const revalidate = 0;
+
 export default async function Page({ params }) {
   const [order, clients] = await Promise.all([
     getOrder(Number(params.orderId)),

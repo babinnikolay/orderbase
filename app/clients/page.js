@@ -14,6 +14,8 @@ export async function generateMetadata() {
   };
 }
 
+export const dynamic = "force-dynamic";
+
 export default async function Page({ children }) {
   //return <Clients />;
   const { PrismaClient } = await import("@prisma/client");

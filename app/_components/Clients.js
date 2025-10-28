@@ -6,10 +6,12 @@ import TableHeader from "@/app/_components/TableHeader";
 import TableRow from "@/app/_components/TableRow";
 import ListButtons from "@/app/_components/ListButtons";
 import Table from "@/app/_components/Table";
-
-export const revalidate = 0
+import { unstable_noStore as noStore } from "next/cache";
 
 export default async function Clients() {
+  noStore();
+  console.log("Clients render");
+
   const { PrismaClient } = await import("@prisma/client");
   const prisma = new PrismaClient();
   let clients = [];

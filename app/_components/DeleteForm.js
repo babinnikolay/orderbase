@@ -10,12 +10,12 @@ function DeleteForm({ onConfirm, onCloseModal, children }) {
       <div className="flex content-center justify-center gap-4">
         <button
           onClick={onConfirm}
-          className="p-1 px-2 rounded-md border border-bl hover:bg-accent-800 hover:text-accent-400 "
+          className="p-1 px-2 rounded-md border border-bl border-primary-500 hover:bg-accent-800 hover:text-accent-400 "
         >
           Delete
         </button>
         <button
-          className="p-1 px-2 rounded-md border border-primary-950 hover:bg-primary-500 "
+          className="p-1 px-2 rounded-md border border-primary-500 hover:bg-primary-700 "
           onClick={onCloseModal}
         >
           Cancel

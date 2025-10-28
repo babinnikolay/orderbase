@@ -6,21 +6,21 @@ import SelectClient from "@/app/_components/SelectClient";
 import SingleDatePicker from "@/app/_components/SingleDatePicker";
 
 function OrderForm({ order, clients }) {
-  const [isPending, startTransition] = useTransition();
+  const [startTransition] = useTransition();
   const [date, setDate] = useState(order.date);
 
   if (!order) return;
 
   function handleSubmit(dataForm) {
     const newOrder = {
-      id: dataForm.get("order-id"),
-      client: {
-        id: dataForm.get("client-id"),
-      },
-      date: dataForm.get("order-date"),
-      amount: dataForm.get("order-amount"),
+      client: { connect: { id: Number(dataForm.get("client-id")) } },
+      date: new Date(date),
+      amount: Number(dataForm.get("order-amount")),
       description: dataForm.get("order-description").split(0, 1000)[0],
     };
+    const id = dataForm.get("order-id");
+    if (id) newOrder.id = Number(id);
+
     startTransition(async () => {
       await saveOrderAction(newOrder);
     });

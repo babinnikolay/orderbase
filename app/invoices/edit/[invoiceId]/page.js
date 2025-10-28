@@ -5,12 +5,11 @@ import { getClients, getInvoice } from "@/app/_lib/data-service";
 import { dateFormat } from "@/app/_helpers/appConstants";
 import { format } from "date-fns";
 import InvoiceForm from "@/app/_components/InvoiceForm";
-import InvoiceOrdersList from "@/app/_components/InvoiceOrdersList";
 import BackButton from "@/app/_components/BackButton";
 
 export default async function Page({ params }) {
   const [invoice, clients] = await Promise.all([
-    getInvoice(await params.invoiceId),
+    getInvoice(Number(await params.invoiceId)),
     getClients(),
   ]);
 
@@ -22,9 +21,7 @@ export default async function Page({ params }) {
         </SectionLabel>
         <BackButton href="/invoices" text="Invoices list" />
       </SectionLine>
-      <InvoiceForm invoice={invoice} clients={clients}>
-        <InvoiceOrdersList invoice={invoice} />
-      </InvoiceForm>
+      <InvoiceForm invoice={invoice} clients={clients} />
     </div>
   );
 }

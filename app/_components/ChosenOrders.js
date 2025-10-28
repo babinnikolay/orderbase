@@ -1,36 +1,32 @@
 "use client";
 
 import OrderChip from "@/app/_components/OrderChip";
-import React, { useState } from "react";
+import React from "react";
 import AddOrders from "@/app/_components/AddOrders";
 
 function calcTotal(orders) {
   return orders.reduce((sum, order) => sum + order.amount, 0);
 }
 
-export default function ChosenOrders({ orders }) {
-  const [chosenOrders, setChosenOrders] = useState(orders);
-  const [total, setTotal] = useState(calcTotal(orders));
-
+export default function ChosenOrders({ orders, total, setOrders, setTotal }) {
   function handleAddOrders(newOrders) {
     const uniqueOrders = [
-      ...chosenOrders,
+      ...orders,
       ...newOrders.filter(
-        (order) => !chosenOrders.some((existing) => existing.id === order.id),
+        (order) => !orders.some((existing) => existing.id === order.id),
       ),
     ];
-    setChosenOrders(uniqueOrders);
+    setOrders(uniqueOrders);
     setTotal(calcTotal(uniqueOrders));
-    console.log(uniqueOrders);
   }
 
   return (
     <div>
       <div>
-        <AddOrders chosenOrders={chosenOrders} addOrders={handleAddOrders} />
+        <AddOrders chosenOrders={orders} addOrders={handleAddOrders} />
       </div>
       <div className="flex flex-wrap gap-2 p-2">
-        {chosenOrders.map((order, index) => (
+        {orders.map((order, index) => (
           <OrderChip key={index} order={order} />
         ))}
       </div>

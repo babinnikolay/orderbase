@@ -1,30 +1,35 @@
 "use client";
 import React, { useState, useTransition } from "react";
 import SaveButton from "@/app/_components/SaveButton";
-import { saveInvoiceAction } from "@/app/_lib/actions";
 import SelectClient from "@/app/_components/SelectClient";
 import SingleDatePicker from "@/app/_components/SingleDatePicker";
 import SetPaidButton from "@/app/_components/SetPaidButton";
+import InvoiceOrdersList from "@/app/_components/InvoiceOrdersList";
+import { saveInvoiceAction } from "@/app/_lib/actions";
 
 function InvoiceForm({ invoice, clients, children }) {
   const [isPending, startTransition] = useTransition();
   const [date, setDate] = useState(invoice.date);
   const [paid, setPaid] = useState(invoice.paid);
+  const [orders, setOrders] = useState(invoice.orders);
+  const [total, setTotal] = useState(0);
 
   if (!invoice) return;
 
   function handleSubmit(dataForm) {
     const newInvoice = {
-      id: dataForm.get("invoice-id"),
       client: {
-        id: dataForm.get("client-id"),
+        connect: { id: Number(dataForm.get("client-id")) },
       },
-      date: dataForm.get("invoice-date"),
-      total: dataForm.get("invoice-total"),
+      date: new Date(date).toISOString(),
+      total: Number(total),
       description: dataForm.get("invoice-description").split(0, 1000)[0],
-      paid: dataForm.get("invoice-paid"),
-      orders: [],
+      paid: Boolean(paid),
+      orders: [...orders.map((order) => ({ id: order.id }))],
     };
+    const id = dataForm.get("invoice-id");
+    if (id) newInvoice.id = Number(id);
+
     startTransition(async () => {
       await saveInvoiceAction(newInvoice);
     });
@@ -48,7 +53,14 @@ function InvoiceForm({ invoice, clients, children }) {
 
         <div>
           <label>Orders</label>
-          <div className="space-y-2 py-2">{children}</div>
+          <div className="space-y-2 py-2">
+            <InvoiceOrdersList
+              orders={orders}
+              total={total}
+              setOrders={setOrders}
+              setTotal={setTotal}
+            />
+          </div>
         </div>
         <div className="space-y-2">
           <label htmlFor="invoice-description">Description</label>

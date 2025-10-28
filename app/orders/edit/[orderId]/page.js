@@ -9,7 +9,7 @@ import BackButton from "@/app/_components/BackButton";
 
 export default async function Page({ params }) {
   const [order, clients] = await Promise.all([
-    getOrder(params.orderId),
+    getOrder(Number(params.orderId)),
     getClients(),
   ]);
 

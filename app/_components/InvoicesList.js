@@ -6,6 +6,7 @@ import TableRow from "@/app/_components/TableRow";
 import { format } from "date-fns";
 import { dateFormat } from "@/app/_helpers/appConstants";
 import ListButtons from "@/app/_components/ListButtons";
+import EmptyList from "@/app/_components/EmptyList";
 
 export default async function InvoicesList() {
   const invoices = await getInvoices();
@@ -19,24 +20,28 @@ export default async function InvoicesList() {
         <div className="flex-1">Description</div>
         <div className="flex-none w-32 text-center">Actions</div>
       </TableHeader>
-      {invoices.map((invoice, index) => (
-        <TableRow key={index}>
-          <div className="flex-none w-32">
-            {format(invoice.date, dateFormat)}
-          </div>
-          <div className="flex-none w-60">{invoice.client.name}</div>
-          <div className="flex-none w-32">{invoice.total}</div>
-          <div className="flex-none w-20 text-center items-left flex justify-start ">
-            <div
-              className={` border border-primary-700 rounded-md w-fit p-1 ${invoice.paid ? "bg-green-800" : "bg-accent-800"}`}
-            >
-              {invoice.paid ? "paid" : "unpaid"}
+      {invoices.length > 0 ? (
+        invoices.map((invoice, index) => (
+          <TableRow key={index}>
+            <div className="flex-none w-32">
+              {format(invoice.date, dateFormat)}
             </div>
-          </div>
-          <div className="flex-1">{invoice.description}</div>
-          <ListButtons href={`/invoices/edit/${invoice.id}`} />
-        </TableRow>
-      ))}
+            <div className="flex-none w-60">{invoice.client.name}</div>
+            <div className="flex-none w-32">{invoice.total}</div>
+            <div className="flex-none w-20 text-center items-left flex justify-start ">
+              <div
+                className={` border border-primary-700 rounded-md w-fit p-1 ${invoice.paid ? "bg-green-800" : "bg-accent-800"}`}
+              >
+                {invoice.paid ? "paid" : "unpaid"}
+              </div>
+            </div>
+            <div className="flex-1">{invoice.description}</div>
+            <ListButtons href={`/invoices/edit/${invoice.id}`} />
+          </TableRow>
+        ))
+      ) : (
+        <EmptyList name="invoices" />
+      )}
     </Table>
   );
 }

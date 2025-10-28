@@ -2,14 +2,15 @@
 
 import React, { startTransition } from "react";
 import Link from "next/link";
-import { deleteClientAction } from "@/app/_lib/actions";
+import { deleteClientAction, deleteOrderAction } from "@/app/_lib/actions";
 import Modal from "@/app/_components/Modal";
 import RowDeleteButton from "@/app/_components/RowDeleteButton";
 import DeleteForm from "@/app/_components/DeleteForm";
 
-function handleDelete(id) {
+function handleDelete(name, id) {
   startTransition(async () => {
-    await deleteClientAction(id);
+    if (name === "client") await deleteClientAction(id);
+    if (name === "order") await deleteOrderAction(id);
   });
 }
 
@@ -27,7 +28,9 @@ function ListButtons({ href, id, name }) {
           <RowDeleteButton />
         </Modal.Open>
         <Modal.Window name={"delete-window"}>
-          <DeleteForm onConfirm={() => handleDelete(id)}>{name}</DeleteForm>
+          <DeleteForm onConfirm={() => handleDelete(name, id)}>
+            {name}
+          </DeleteForm>
         </Modal.Window>
       </Modal>
     </div>

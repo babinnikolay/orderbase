@@ -7,6 +7,8 @@ import TableRow from "@/app/_components/TableRow";
 import ListButtons from "@/app/_components/ListButtons";
 import Table from "@/app/_components/Table";
 
+export const revalidate = 0
+
 export default async function Clients() {
   const { PrismaClient } = await import("@prisma/client");
   const prisma = new PrismaClient();

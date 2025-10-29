@@ -4,7 +4,6 @@ import SectionLine from "@/app/_components/SectionLine";
 import { getClients, getNewInvoice } from "@/app/_lib/data-service";
 import InvoiceForm from "@/app/_components/InvoiceForm";
 import BackButton from "@/app/_components/BackButton";
-import InvoiceOrdersList from "@/app/_components/InvoiceOrdersList";
 
 export const revalidate = 0;
 
@@ -17,9 +16,7 @@ export default async function Page() {
         <SectionLabel>New invoice</SectionLabel>
         <BackButton text="Invoices list" href="/invoices" />
       </SectionLine>
-      <InvoiceForm invoice={invoice} clients={clients}>
-        <InvoiceOrdersList invoice={invoice} />
-      </InvoiceForm>
+      <InvoiceForm invoice={invoice} clients={clients} />
     </div>
   );
 }

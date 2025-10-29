@@ -1,8 +1,14 @@
 import React from "react";
 
-function SelectClient({ clients, defaultId }) {
+const EMPTY_CLIENT_ID = "--";
+
+function SelectClient({ clients, defaultId, setClientId }) {
   const changed = clients.slice();
-  changed.unshift({ id: null, name: "--" });
+  changed.unshift({ id: null, name: EMPTY_CLIENT_ID });
+
+  function handleSelectClientChange(e) {
+    setClientId(e.target.value);
+  }
 
   return (
     <div className="flex flex-col w-64">
@@ -14,6 +20,7 @@ function SelectClient({ clients, defaultId }) {
         id="client-id"
         className="p-2 bg-primary-300 text-primary-800 rounded-xl w-full h-[42px]"
         defaultValue={defaultId}
+        onChange={(e) => handleSelectClientChange(e)}
       >
         {changed.map((client) => (
           <option key={client.id} value={client.id}>

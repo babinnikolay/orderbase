@@ -10,8 +10,9 @@ import BackButton from "@/app/_components/BackButton";
 export const revalidate = 0;
 
 export default async function Page({ params }) {
+  const { invoiceId } = await params;
   const [invoice, clients] = await Promise.all([
-    getInvoice(Number(await params.invoiceId)),
+    getInvoice(Number(invoiceId)),
     getClients(),
   ]);
 

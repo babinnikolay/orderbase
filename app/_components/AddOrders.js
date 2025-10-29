@@ -1,14 +1,16 @@
+"use client";
+
 import React, { useState } from "react";
 import Button from "@/app/_components/Button";
 import { BadgeMinus, Plus, Save } from "lucide-react";
 import AddOrdersList from "@/app/_components/AddOrdersList";
 
-function AddOrders({ addOrders }) {
+function AddOrders({ clientId, onAddOrders }) {
   const [addingMode, setAddingMode] = useState(false);
   const [count, setCount] = useState(0);
   const [newOrders, setNewOrders] = useState([]);
 
-  const chooseCount = function chooseCount(order, inc) {
+  const changeCount = function chooseCount(order, inc) {
     setCount((c) => (inc ? c + 1 : c - 1));
     newOrders.push(order);
     setNewOrders(newOrders);
@@ -17,11 +19,14 @@ function AddOrders({ addOrders }) {
   return (
     <div>
       {!addingMode && (
-        <Button onClick={() => setAddingMode(!addingMode)}>
+        <button
+          onClick={() => setAddingMode(!addingMode)}
+          className="p-1 px-2 rounded-md border border-primary-600 hover:bg-primary-500"
+        >
           <div className="flex items-center justify-center">
             <Plus /> Add orders
           </div>
-        </Button>
+        </button>
       )}
       {addingMode && (
         <div>
@@ -30,12 +35,12 @@ function AddOrders({ addOrders }) {
               onClick={() => {
                 if (addingMode) setCount(0);
                 setAddingMode(!addingMode);
-                addOrders(newOrders);
+                onAddOrders(newOrders);
                 setNewOrders([]);
               }}
             >
               <div className="flex items-center justify-center gap-1">
-                <Save /> Add {count ? `(${count})` : ""}
+                <Save /> Ok {count ? `(${count})` : ""}
               </div>
             </Button>
             <Button
@@ -50,7 +55,7 @@ function AddOrders({ addOrders }) {
               </div>
             </Button>
           </div>
-          <AddOrdersList choose={chooseCount} />
+          <AddOrdersList onSelect={changeCount} clientId={clientId} />
         </div>
       )}
     </div>

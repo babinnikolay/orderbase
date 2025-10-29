@@ -3,15 +3,23 @@ import { format } from "date-fns";
 import { dateFormat } from "@/app/_helpers/appConstants";
 import { Trash } from "lucide-react";
 
-function OrderChip({ order, selectable = false, deletable = true, choose }) {
+function OrderChip({
+  order,
+  selectable = false,
+  deletable = true,
+  onSelect,
+  onDelete,
+}) {
   const [selected, setSelected] = useState(false);
   return (
     <div
       key={order.id}
       className={`flex items-center gap-3 px-3 py-2  rounded-lg shadow border hover:shadow-md transition-shadow hover:bg-primary-400 cursor-default ${selected ? "bg-primary-400" : "bg-primary-200"}`}
       onClick={() => {
-        choose(order, !selected);
-        selectable && setSelected(!selected);
+        if (selectable) {
+          onSelect(order, !selected);
+          setSelected(!selected);
+        }
       }}
     >
       <div className="flex items-center gap-2 align-center">
@@ -27,7 +35,15 @@ function OrderChip({ order, selectable = false, deletable = true, choose }) {
           {order.amount}
         </span>
         {deletable && (
-          <button type="button" title="Remove from this invoice">
+          <button
+            type="button"
+            title="Remove from this invoice"
+            onClick={() => {
+              if (deletable) {
+                onDelete(order.id);
+              }
+            }}
+          >
             <Trash size={13} />
           </button>
         )}

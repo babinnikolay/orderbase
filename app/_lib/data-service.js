@@ -7,9 +7,6 @@ import { prisma } from "../_lib/prisma";
 export async function getOrders() {
   try {
     return await prisma.order.findMany({
-      where: {
-        invoiceId: null,
-      },
       include: {
         client: {
           select: {
@@ -24,8 +21,25 @@ export async function getOrders() {
   }
 }
 
-export async function getAvailableOrders() {
-  return await getOrders();
+export async function getAvailableOrders(clientId) {
+  try {
+    return await prisma.order.findMany({
+      where: {
+        invoiceId: null,
+        clientId: Number(clientId),
+      },
+      include: {
+        client: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
+      },
+    });
+  } catch (error) {
+    throw error;
+  }
 }
 
 export async function getOrder(id) {
@@ -77,6 +91,15 @@ export async function deleteOrder(id) {
   try {
     await prisma.order.delete({ where: { id } });
     revalidatePath("/orders");
+  } catch (error) {
+    throw error;
+  }
+}
+
+export async function deleteInvoice(id) {
+  try {
+    await prisma.invoice.delete({ where: { id } });
+    revalidatePath("/invoices");
   } catch (error) {
     throw error;
   }
@@ -173,22 +196,12 @@ export async function getInvoice(id) {
 }
 
 export async function saveInvoice(invoice) {
-  console.log(invoice);
   if (!invoice.id) {
     try {
       await prisma.invoice.create({
-        data: invoice,
-      });
-    } catch (err) {
-      throw err;
-    }
-  } else {
-    try {
-      await prisma.invoice.update({
-        where: { id: invoice.id },
         data: {
           date: invoice.date,
-          total: invoice.amount,
+          total: invoice.total,
           description: invoice.description,
           paid: invoice.paid,
           clientId: invoice.client.id,
@@ -202,6 +215,49 @@ export async function saveInvoice(invoice) {
     } catch (err) {
       throw err;
     }
+  } else {
+    const keepOrders = invoice.orders.map((order) => order.id);
+
+    console.log(keepOrders);
+
+    await prisma.$transaction(async (tx) => {
+      await tx.order.updateMany({
+        where: {
+          invoiceId: invoice.id,
+          id: {
+            notIn: keepOrders,
+          },
+        },
+        data: {
+          invoiceId: null,
+        },
+      });
+
+      if (keepOrders.length > 0) {
+        await tx.order.updateMany({
+          where: {
+            id: {
+              in: keepOrders,
+            },
+            invoiceId: null,
+          },
+          data: {
+            invoiceId: invoice.id,
+          },
+        });
+      }
+
+      await prisma.invoice.update({
+        where: { id: invoice.id },
+        data: {
+          date: invoice.date,
+          total: invoice.total,
+          description: invoice.description,
+          paid: invoice.paid,
+          clientId: invoice.client.id,
+        },
+      });
+    });
   }
 }
 

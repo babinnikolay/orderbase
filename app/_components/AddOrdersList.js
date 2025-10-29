@@ -1,21 +1,23 @@
 import React from "react";
 import OrderChip from "@/app/_components/OrderChip";
 import useSWR from "swr";
+import EmptyList from "@/app/_components/EmptyList";
 
 const fetcher = (url) => fetch(url).then((res) => res.json());
 
-function AddOrdersList({ choose }) {
+function AddOrdersList({ onSelect, clientId }) {
   const {
     data: orders,
     error,
     isLoading,
-  } = useSWR("/api/orders/available", fetcher, {
+  } = useSWR(`/api/orders/available?clientId=${clientId}`, fetcher, {
     revalidateOnFocus: false,
     revalidateOnReconnect: false,
   });
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
+  if (orders.length === 0) return <EmptyList name="orders" />;
 
   return (
     <div className=" absolute flex flex-wrap gap-2 p-2 border bg-primary-600 rounded-xl min-h-min">
@@ -25,7 +27,7 @@ function AddOrdersList({ choose }) {
           order={order}
           selectable={true}
           deletable={false}
-          choose={choose}
+          onSelect={onSelect}
         />
       ))}
     </div>

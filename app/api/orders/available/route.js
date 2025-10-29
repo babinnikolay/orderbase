@@ -1,8 +1,18 @@
 import { getAvailableOrders } from "@/app/_lib/data-service";
 
-export async function GET() {
+export async function GET(request) {
   try {
-    const orders = await getAvailableOrders();
+    const { searchParams } = new URL(request.url);
+    const clientId = searchParams.get("clientId");
+
+    if (!clientId) {
+      return Response.json(
+        { message: "Client ID is required" },
+        { status: 400 },
+      );
+    }
+
+    const orders = await getAvailableOrders(clientId);
     return Response.json(orders);
   } catch (error) {
     return Response.json({ message: error.message });

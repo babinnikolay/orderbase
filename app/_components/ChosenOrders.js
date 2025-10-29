@@ -8,7 +8,13 @@ function calcTotal(orders) {
   return orders.reduce((sum, order) => sum + order.amount, 0);
 }
 
-export default function ChosenOrders({ orders, total, setOrders, setTotal }) {
+export default function ChosenOrders({
+  orders,
+  total,
+  setOrders,
+  setTotal,
+  clientId,
+}) {
   function handleAddOrders(newOrders) {
     const uniqueOrders = [
       ...orders,
@@ -20,18 +26,35 @@ export default function ChosenOrders({ orders, total, setOrders, setTotal }) {
     setTotal(calcTotal(uniqueOrders));
   }
 
+  function handleRemoveOrder(id) {
+    const filtered = orders.filter((order) => order.id !== id);
+    setOrders(filtered);
+    setTotal(calcTotal(filtered));
+  }
+
   return (
-    <div>
+    <div className="flex flex-col space-y-2">
       <div>
-        <AddOrders chosenOrders={orders} addOrders={handleAddOrders} />
+        <AddOrders
+          chosenOrders={orders}
+          onAddOrders={handleAddOrders}
+          clientId={clientId}
+        />
       </div>
       <div className="flex flex-wrap gap-2 p-2">
         {orders.map((order, index) => (
-          <OrderChip key={index} order={order} />
+          <OrderChip
+            key={index}
+            order={order}
+            deletable={true}
+            onDelete={handleRemoveOrder}
+          />
         ))}
       </div>
-      <div className="space-y-2 flex flex-row w-64">
-        <label htmlFor="invoice-amount">Total amount: {total}</label>
+      <div className="space-y-2 flex w-full justify-end">
+        <label className="font-bold" htmlFor="invoice-amount">
+          Total amount: {total}
+        </label>
       </div>
     </div>
   );

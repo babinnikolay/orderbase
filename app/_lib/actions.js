@@ -2,8 +2,8 @@
 
 import {
   deleteClient,
+  deleteInvoice,
   deleteOrder,
-  getAvailableOrders,
   saveClient,
   saveInvoice,
   saveOrder,
@@ -33,12 +33,13 @@ export async function deleteOrderAction(id) {
   revalidatePath(`/orders`);
 }
 
+export async function deleteInvoiceAction(id) {
+  await deleteInvoice(id);
+  revalidatePath(`/invoices`);
+}
+
 export async function saveInvoiceAction(invoice) {
   await saveInvoice(invoice);
   revalidatePath("/invoices");
   redirect("/invoices");
-}
-
-export async function getFreeOrdersAction() {
-  return await getAvailableOrders();
 }

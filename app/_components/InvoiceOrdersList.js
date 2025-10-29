@@ -7,6 +7,7 @@ export default function InvoiceOrdersList({
   total,
   setOrders,
   setTotal,
+  clientId,
 }) {
   return (
     <div className=" p-4 rounded-xl bg-primary-300 text-primary-800 ">
@@ -15,6 +16,7 @@ export default function InvoiceOrdersList({
         orders={orders}
         setOrders={setOrders}
         setTotal={setTotal}
+        clientId={clientId}
       />
     </div>
   );

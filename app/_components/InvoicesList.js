@@ -36,7 +36,11 @@ export default async function InvoicesList() {
               </div>
             </div>
             <div className="flex-1">{invoice.description}</div>
-            <ListButtons href={`/invoices/edit/${invoice.id}`} />
+            <ListButtons
+              href={`/invoices/edit/${invoice.id}`}
+              id={invoice.id}
+              name="invoice"
+            />
           </TableRow>
         ))
       ) : (

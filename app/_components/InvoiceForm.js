@@ -6,20 +6,23 @@ import SingleDatePicker from "@/app/_components/SingleDatePicker";
 import SetPaidButton from "@/app/_components/SetPaidButton";
 import InvoiceOrdersList from "@/app/_components/InvoiceOrdersList";
 import { saveInvoiceAction } from "@/app/_lib/actions";
+import { useFormState } from "@/app/hooks/useFormState";
 
-function InvoiceForm({ invoice, clients, children }) {
-  const [isPending, startTransition] = useTransition();
+function InvoiceForm({ invoice, clients }) {
+  const [_, startTransition] = useTransition();
   const [date, setDate] = useState(invoice.date);
   const [paid, setPaid] = useState(invoice.paid);
   const [orders, setOrders] = useState(invoice.orders);
-  const [total, setTotal] = useState(0);
+  const [total, setTotal] = useState(invoice.total);
+  const [clientId, setClientId] = useState(invoice.client.id);
+  const { formData, isDirty, updateField, reset } = useFormState(invoice);
 
   if (!invoice) return;
 
   function handleSubmit(dataForm) {
     const newInvoice = {
       client: {
-        connect: { id: Number(dataForm.get("client-id")) },
+        id: Number(dataForm.get("client-id")),
       },
       date: new Date(date).toISOString(),
       total: Number(total),
@@ -42,7 +45,11 @@ function InvoiceForm({ invoice, clients, children }) {
         className="m-4 p-4 rounded-xl border border-primary-600 shadow-lg bg-primary-800 space-y-4"
       >
         <div className="flex flex-row gap-4">
-          <SelectClient clients={clients} defaultId={invoice.client.id} />
+          <SelectClient
+            clients={clients}
+            defaultId={invoice.client.id}
+            setClientId={setClientId}
+          />
           <div className="flex flex-col w-40">
             <SingleDatePicker date={date} onChangeDate={setDate} />
           </div>
@@ -59,6 +66,7 @@ function InvoiceForm({ invoice, clients, children }) {
               total={total}
               setOrders={setOrders}
               setTotal={setTotal}
+              clientId={clientId}
             />
           </div>
         </div>

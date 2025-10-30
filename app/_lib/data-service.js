@@ -106,7 +106,12 @@ export async function deleteInvoice(id) {
 }
 
 export async function saveClient(client) {
-  await prisma.client.create({ data: { name: client.name } });
+  if (!client.id) await prisma.client.create({ data: { name: client.name } });
+  else
+    await prisma.client.update({
+      where: { id: client.id },
+      data: { name: client.name },
+    });
 }
 
 export async function getNewOrder() {
@@ -204,7 +209,7 @@ export async function saveInvoice(invoice) {
           total: invoice.total,
           description: invoice.description,
           paid: invoice.paid,
-          clientId: invoice.client.id,
+          client: { connect: { id: invoice.client.id } },
           orders: {
             connect: invoice.orders.map((order) => ({
               id: order.id,

@@ -6,7 +6,7 @@ import { getClient } from "@/app/_lib/data-service";
 import BackButton from "@/app/_components/BackButton";
 
 export default async function Page({ params }) {
-  const client = await getClient(params.clientId);
+  const client = await getClient(Number(params.clientId));
 
   return (
     <div>

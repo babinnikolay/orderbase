@@ -34,13 +34,15 @@ export default function ChosenOrders({
 
   return (
     <div className="flex flex-col space-y-2">
-      <div>
-        <AddOrders
-          chosenOrders={orders}
-          onAddOrders={handleAddOrders}
-          clientId={clientId}
-        />
-      </div>
+      {clientId && (
+        <div>
+          <AddOrders
+            chosenOrders={orders}
+            onAddOrders={handleAddOrders}
+            clientId={clientId}
+          />
+        </div>
+      )}
       <div className="flex flex-wrap gap-2 p-2">
         {orders.map((order, index) => (
           <OrderChip

@@ -17,7 +17,12 @@ function AddOrdersList({ onSelect, clientId }) {
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
-  if (orders.length === 0) return <EmptyList name="orders" />;
+  if (orders.length === 0)
+    return (
+      <div className="absolute">
+        <EmptyList name="orders" />
+      </div>
+    );
 
   return (
     <div className=" absolute flex flex-wrap gap-2 p-2 border bg-primary-600 rounded-xl min-h-min">

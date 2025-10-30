@@ -1,60 +1,125 @@
 "use client";
-import React, { useState, useTransition } from "react";
+import React, { useEffect, useState, useTransition } from "react";
+import { useForm } from "react-hook-form";
 import SaveButton from "@/app/_components/SaveButton";
 import SelectClient from "@/app/_components/SelectClient";
-import SingleDatePicker from "@/app/_components/SingleDatePicker";
 import SetPaidButton from "@/app/_components/SetPaidButton";
 import InvoiceOrdersList from "@/app/_components/InvoiceOrdersList";
 import { saveInvoiceAction } from "@/app/_lib/actions";
-import { useFormState } from "@/app/hooks/useFormState";
+import SingleDatePicker from "@/app/_components/SingleDatePicker";
+import { useRouter } from "next/navigation";
 
 function InvoiceForm({ invoice, clients }) {
   const [_, startTransition] = useTransition();
-  const [date, setDate] = useState(invoice.date);
-  const [paid, setPaid] = useState(invoice.paid);
   const [orders, setOrders] = useState(invoice.orders);
   const [total, setTotal] = useState(invoice.total);
-  const [clientId, setClientId] = useState(invoice.client.id);
-  const { formData, isDirty, updateField, reset } = useFormState(invoice);
+  const router = useRouter();
+
+  const {
+    register,
+    handleSubmit,
+    formState: { isDirty, errors },
+    setValue,
+    watch,
+    reset,
+  } = useForm({
+    defaultValues: {
+      clientId: invoice?.client?.id || "",
+      date: invoice?.date || new Date(),
+      paid: invoice?.paid || false,
+      description: invoice?.description || "",
+    },
+    shouldUnregister: false,
+  });
+
+  useEffect(() => {
+    if (invoice) {
+      reset({
+        clientId: invoice.client.id,
+        date: invoice.date,
+        paid: invoice.paid,
+        description: invoice.description || "",
+      });
+      setOrders(invoice.orders);
+      setTotal(invoice.total);
+    }
+  }, [invoice, reset]);
+
+  useEffect(() => {
+    if (orders.length !== invoice.orders.length || total !== invoice.total) {
+      setValue("ordersChanged", true, { shouldDirty: true });
+    }
+  }, [orders, total, invoice.orders, invoice.total, setValue]);
 
   if (!invoice) return;
 
-  function handleSubmit(dataForm) {
-    const newInvoice = {
-      client: {
-        id: Number(dataForm.get("client-id")),
-      },
-      date: new Date(date).toISOString(),
-      total: Number(total),
-      description: dataForm.get("invoice-description").split(0, 1000)[0],
-      paid: Boolean(paid),
-      orders: [...orders.map((order) => ({ id: order.id }))],
-    };
-    const id = dataForm.get("invoice-id");
-    if (id) newInvoice.id = Number(id);
+  const handleDateChange = (date) => {
+    setValue("date", date, { shouldDirty: true });
+  };
 
-    startTransition(async () => {
-      await saveInvoiceAction(newInvoice);
-    });
-  }
+  const handleClientChange = (clientId) => {
+    setValue("clientId", clientId, { shouldDirty: true });
+  };
+
+  const handlePaidChange = (paidStatus) => {
+    setValue("paid", paidStatus, { shouldDirty: true });
+  };
+
+  const onSubmit = (data) => {
+    if (isDirty) {
+      const newInvoice = {
+        client: {
+          id: Number(data.clientId),
+        },
+        date: new Date(data.date).toISOString(),
+        total: Number(total),
+        description: data.description.substring(0, 1000),
+        paid: Boolean(data.paid),
+        orders: [...orders.map((order) => ({ id: order.id }))],
+      };
+
+      const id = invoice.id;
+      if (id) newInvoice.id = Number(id);
+
+      startTransition(async () => {
+        await saveInvoiceAction(newInvoice);
+      });
+    } else {
+      router.push("/invoices");
+    }
+  };
 
   return (
     <>
       <form
-        action={handleSubmit}
+        onSubmit={handleSubmit(onSubmit)}
         className="m-4 p-4 rounded-xl border border-primary-600 shadow-lg bg-primary-800 space-y-4"
       >
         <div className="flex flex-row gap-4">
           <SelectClient
             clients={clients}
             defaultId={invoice.client.id}
-            setClientId={setClientId}
+            onClientChange={handleClientChange}
+            disabled={orders.length > 0}
           />
+          {errors.clientId && (
+            <p className="text-red-400 text-sm mt-1">
+              {errors.clientId.message}
+            </p>
+          )}
+
           <div className="flex flex-col w-40">
-            <SingleDatePicker date={date} onChangeDate={setDate} />
+            <SingleDatePicker
+              date={watch("date") ? watch("date") : invoice.date}
+              onChangeDate={handleDateChange}
+            />
           </div>
+
           <div className="flex flex-col h-[82px]">
-            <SetPaidButton paid={paid} onClick={() => setPaid(!paid)} />
+            <SetPaidButton
+              paid={watch("paid")}
+              onClick={() => handlePaidChange(!watch("paid"))}
+            />
           </div>
         </div>
 
@@ -66,25 +131,49 @@ function InvoiceForm({ invoice, clients }) {
               total={total}
               setOrders={setOrders}
               setTotal={setTotal}
-              clientId={clientId}
+              clientId={
+                watch("clientId") ? watch("clientId") : invoice.client.id
+              }
             />
           </div>
         </div>
+
         <div className="space-y-2">
           <label htmlFor="invoice-description">Description</label>
           <textarea
-            name="invoice-description"
+            {...register("description", {
+              maxLength: {
+                value: 1000,
+                message: "Description must be less than 1000 characters",
+              },
+            })}
             rows="5"
             id="invoice-description"
             className="px-5 py-3 bg-primary-300 text-primary-800 w-full shadow-sm rounded-xl"
-            defaultValue={invoice.description}
           />
+          {errors.description && (
+            <p className="text-red-400 text-sm mt-1">
+              {errors.description.message}
+            </p>
+          )}
+          <div className="text-sm text-gray-400">
+            {watch("description")?.length || 0}/1000 characters
+          </div>
         </div>
 
+        <input type="hidden" {...register("ordersChanged")} />
         <input type="hidden" value={invoice.id} name="invoice-id" />
-        <div className="flex justify-end pt-3 gap-3 items-center ">
-          <SaveButton pendingLabel={"Saving..."}>
-            {invoice.id ? "Save and close" : "Create and close"}
+
+        <div className="flex justify-end pt-3 gap-3 items-center">
+          <SaveButton
+            pendingLabel={"Saving..."}
+            disabled={!isDirty || Object.keys(errors).length > 0}
+          >
+            {invoice.id
+              ? isDirty
+                ? "Save and close"
+                : "Close"
+              : "Create and close"}
           </SaveButton>
         </div>
       </form>

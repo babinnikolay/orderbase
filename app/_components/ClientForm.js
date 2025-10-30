@@ -1,17 +1,28 @@
 "use client";
 import { useTransition } from "react";
+import { useForm } from "react-hook-form";
 import SaveButton from "@/app/_components/SaveButton";
 import { saveClientAction } from "@/app/_lib/actions";
 
 function ClientForm({ client }) {
-  const [isPending, startTransition] = useTransition();
+  const [_, startTransition] = useTransition();
+
+  const {
+    register,
+    handleSubmit,
+    formState: { isDirty, errors },
+  } = useForm({
+    defaultValues: {
+      clientName: client?.name || "",
+    },
+  });
 
   if (!client) return;
 
-  function handleSubmit(dataForm) {
+  function handleFormSubmit(data) {
     const newOrder = {
-      id: dataForm.get("client-id"),
-      name: dataForm.get("client-name"),
+      id: client.id,
+      name: data.clientName,
     };
     startTransition(async () => {
       await saveClientAction(newOrder);
@@ -21,7 +32,7 @@ function ClientForm({ client }) {
   return (
     <>
       <form
-        action={handleSubmit}
+        onSubmit={handleSubmit(handleFormSubmit)}
         className="m-4 p-4 rounded-xl border border-primary-600 shadow-lg bg-primary-800"
       >
         <div className="pb-2 flex flex-col">
@@ -40,18 +51,36 @@ function ClientForm({ client }) {
             <div className="space-y-2">
               <label htmlFor="client-name">Name</label>
               <input
-                name="client-name"
+                {...register("clientName", {
+                  required: "Client name is required",
+                  minLength: {
+                    value: 2,
+                    message: "Name must be at least 2 characters",
+                  },
+                })}
                 type="text"
-                id="cient-name"
+                id="client-name"
                 className="px-5 py-3 bg-primary-300 text-primary-800 w-full shadow-sm rounded-xl"
-                defaultValue={client.name}
               />
+              {errors.clientName && (
+                <p className="text-red-400 text-sm mt-1">
+                  {errors.clientName.message}
+                </p>
+              )}
             </div>
           </div>
           <input type="hidden" value={client.id} name="order-id" />
+
           <div className="flex justify-end pt-3 gap-3">
-            <SaveButton pendingLabel={"Saving..."}>
-              {client.id ? "Save and close" : "Create and close"}
+            <SaveButton
+              pendingLabel={"Saving..."}
+              disabled={!isDirty || Object.keys(errors).length > 0}
+            >
+              {client.id
+                ? isDirty
+                  ? "Save and close"
+                  : "Close"
+                : "Create and close"}
             </SaveButton>
           </div>
         </div>

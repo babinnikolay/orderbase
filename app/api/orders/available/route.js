@@ -5,16 +5,11 @@ export async function GET(request) {
     const { searchParams } = new URL(request.url);
     const clientId = searchParams.get("clientId");
 
-    if (!clientId) {
-      return Response.json(
-        { message: "Client ID is required" },
-        { status: 400 },
-      );
+    if (clientId) {
+      const orders = await getAvailableOrders(clientId);
+      return Response.json(orders);
     }
-
-    const orders = await getAvailableOrders(clientId);
-    return Response.json(orders);
   } catch (error) {
-    return Response.json({ message: error.message });
+    throw error;
   }
 }

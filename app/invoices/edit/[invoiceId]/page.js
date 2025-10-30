@@ -24,7 +24,7 @@ export default async function Page({ params }) {
         </SectionLabel>
         <BackButton href="/invoices" text="Invoices list" />
       </SectionLine>
-      <InvoiceForm invoice={invoice} clients={clients} />
+      <InvoiceForm key={invoice.id} invoice={invoice} clients={clients} />
     </div>
   );
 }

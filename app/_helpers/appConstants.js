@@ -18,13 +18,5 @@ export const sideNavSections = [
     href: "/clients",
     text: "👥 Clients",
   },
-  {
-    href: "/reports",
-    text: "📈 Reports",
-  },
-  {
-    href: "/account",
-    text: "⚙️ Page",
-  },
 ];
 export const dateFormat = "dd.MM.yyyy";

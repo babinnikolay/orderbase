@@ -9,7 +9,7 @@ import { saveInvoiceAction } from "@/app/_lib/actions";
 import SingleDatePicker from "@/app/_components/SingleDatePicker";
 import { useRouter } from "next/navigation";
 import PrintInvoice from "@/app/_components/PrintInvoice";
-import { LucideFileX, Printer } from "lucide-react";
+import { Printer } from "lucide-react";
 
 function InvoiceForm({ invoice, clients }) {
   const [_, startTransition] = useTransition();
@@ -94,14 +94,7 @@ function InvoiceForm({ invoice, clients }) {
 
   if (printForm) {
     return (
-      <div className="m-4 p-4 rounded-xl border border-primary-600 shadow-lg bg-primary-800 space-y-4">
-        <button onClick={() => setPrintForm(false)}>
-          <div className="p-2 flex flex-row gap-2 border border-primary-600 rounded-md hover:bg-primary-500 hover:text-primary-700">
-            <LucideFileX /> Close
-          </div>
-        </button>
-        <PrintInvoice invoice={invoice} />
-      </div>
+      <PrintInvoice invoice={invoice} onClose={() => setPrintForm(false)} />
     );
   }
 
@@ -138,7 +131,7 @@ function InvoiceForm({ invoice, clients }) {
         <div className="flex flex-col h-[82px]">
           <div className="h-54 mt-auto flex p-2 px-2 rounded-xl border border-primary-600 hover:bg-primary-500 gap-2">
             <Printer />
-            <button onClick={() => setPrintForm(true)}>Print</button>
+            <button onClick={() => setPrintForm(true)}>Print preview</button>
           </div>
         </div>
       </div>

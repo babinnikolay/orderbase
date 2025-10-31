@@ -38,3 +38,47 @@
     --rdp-background-color: theme('colors.accent.600') !important;
     margin: 0 !important;
 }
+
+@media print {
+    body * {
+        visibility: hidden;
+    }
+
+    .print\:block,
+    .print\:block * {
+        visibility: visible;
+    }
+
+    .print\:block {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+    }
+
+    @page {
+        margin: 1cm;
+        size: A4;
+    }
+
+    .print\:block table {
+        page-break-inside: avoid;
+    }
+
+    .print\:block tr {
+        page-break-inside: avoid;
+        page-break-after: auto;
+    }
+}
+
+.hidden-print {
+    display: block;
+}
+
+@media print {
+    .hidden-print {
+        display: none !important;
+    }
+}

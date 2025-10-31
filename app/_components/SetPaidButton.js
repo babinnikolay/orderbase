@@ -4,7 +4,7 @@ import { RussianRuble } from "lucide-react";
 
 export default function SetPaidButton({ paid, onClick, type = "button" }) {
   return (
-    <div className="h-54 w-32 mt-auto">
+    <div className="h-54 mt-auto">
       <button
         type={type}
         onClick={onClick}

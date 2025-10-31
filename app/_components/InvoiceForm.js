@@ -8,12 +8,15 @@ import InvoiceOrdersList from "@/app/_components/InvoiceOrdersList";
 import { saveInvoiceAction } from "@/app/_lib/actions";
 import SingleDatePicker from "@/app/_components/SingleDatePicker";
 import { useRouter } from "next/navigation";
+import PrintInvoice from "@/app/_components/PrintInvoice";
+import { LucideFileX, Printer } from "lucide-react";
 
 function InvoiceForm({ invoice, clients }) {
   const [_, startTransition] = useTransition();
   const [orders, setOrders] = useState(invoice.orders);
   const [total, setTotal] = useState(invoice.total);
   const router = useRouter();
+  const [printForm, setPrintForm] = useState(false);
 
   const {
     register,
@@ -89,95 +92,109 @@ function InvoiceForm({ invoice, clients }) {
     }
   };
 
+  if (printForm) {
+    return (
+      <div className="m-4 p-4 rounded-xl border border-primary-600 shadow-lg bg-primary-800 space-y-4">
+        <button onClick={() => setPrintForm(false)}>
+          <div className="p-2 flex flex-row gap-2 border border-primary-600 rounded-md hover:bg-primary-500 hover:text-primary-700">
+            <LucideFileX /> Close
+          </div>
+        </button>
+        <PrintInvoice invoice={invoice} />
+      </div>
+    );
+  }
+
   return (
-    <>
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="m-4 p-4 rounded-xl border border-primary-600 shadow-lg bg-primary-800 space-y-4"
-      >
-        <div className="flex flex-row gap-4">
-          <SelectClient
-            clients={clients}
-            defaultId={invoice.client.id}
-            onClientChange={handleClientChange}
-            disabled={orders.length > 0}
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="m-4 p-4 rounded-xl border border-primary-600 shadow-lg bg-primary-800 space-y-4"
+    >
+      <div className="flex flex-row gap-4">
+        <SelectClient
+          clients={clients}
+          defaultId={invoice.client.id}
+          onClientChange={handleClientChange}
+          disabled={orders.length > 0}
+        />
+        {errors.clientId && (
+          <p className="text-red-400 text-sm mt-1">{errors.clientId.message}</p>
+        )}
+
+        <div className="flex flex-col w-40">
+          <SingleDatePicker
+            date={watch("date") ? watch("date") : invoice.date}
+            onChangeDate={handleDateChange}
           />
-          {errors.clientId && (
-            <p className="text-red-400 text-sm mt-1">
-              {errors.clientId.message}
-            </p>
-          )}
-
-          <div className="flex flex-col w-40">
-            <SingleDatePicker
-              date={watch("date") ? watch("date") : invoice.date}
-              onChangeDate={handleDateChange}
-            />
-          </div>
-
-          <div className="flex flex-col h-[82px]">
-            <SetPaidButton
-              paid={watch("paid")}
-              onClick={() => handlePaidChange(!watch("paid"))}
-            />
-          </div>
         </div>
 
-        <div>
-          <label>Orders</label>
-          <div className="space-y-2 py-2">
-            <InvoiceOrdersList
-              orders={orders}
-              total={total}
-              setOrders={setOrders}
-              setTotal={setTotal}
-              clientId={
-                watch("clientId") ? watch("clientId") : invoice.client.id
-              }
-            />
-          </div>
-        </div>
-
-        <div className="space-y-2">
-          <label htmlFor="invoice-description">Description</label>
-          <textarea
-            {...register("description", {
-              maxLength: {
-                value: 1000,
-                message: "Description must be less than 1000 characters",
-              },
-            })}
-            rows="5"
-            id="invoice-description"
-            className="px-5 py-3 bg-primary-300 text-primary-800 w-full shadow-sm rounded-xl"
+        <div className="flex flex-col h-[82px]">
+          <SetPaidButton
+            paid={watch("paid")}
+            onClick={() => handlePaidChange(!watch("paid"))}
           />
-          {errors.description && (
-            <p className="text-red-400 text-sm mt-1">
-              {errors.description.message}
-            </p>
-          )}
-          <div className="text-sm text-gray-400">
-            {watch("description")?.length || 0}/1000 characters
+        </div>
+
+        <div className="flex flex-col h-[82px]">
+          <div className="h-54 mt-auto flex p-2 px-2 rounded-xl border border-primary-600 hover:bg-primary-500 gap-2">
+            <Printer />
+            <button onClick={() => setPrintForm(true)}>Print</button>
           </div>
         </div>
+      </div>
 
-        <input type="hidden" {...register("ordersChanged")} />
-        <input type="hidden" value={invoice.id} name="invoice-id" />
-
-        <div className="flex justify-end pt-3 gap-3 items-center">
-          <SaveButton
-            pendingLabel={"Saving..."}
-            disabled={!isDirty || Object.keys(errors).length > 0}
-          >
-            {invoice.id
-              ? isDirty
-                ? "Save and close"
-                : "Close"
-              : "Create and close"}
-          </SaveButton>
+      <div>
+        <label>Orders</label>
+        <div className="space-y-2 py-2">
+          <InvoiceOrdersList
+            orders={orders}
+            total={total}
+            setOrders={setOrders}
+            setTotal={setTotal}
+            clientId={watch("clientId") ? watch("clientId") : invoice.client.id}
+          />
         </div>
-      </form>
-    </>
+      </div>
+
+      <div className="space-y-2">
+        <label htmlFor="invoice-description">Description</label>
+        <textarea
+          {...register("description", {
+            maxLength: {
+              value: 1000,
+              message: "Description must be less than 1000 characters",
+            },
+          })}
+          rows="5"
+          id="invoice-description"
+          className="px-5 py-3 bg-primary-300 text-primary-800 w-full shadow-sm rounded-xl"
+        />
+        {errors.description && (
+          <p className="text-red-400 text-sm mt-1">
+            {errors.description.message}
+          </p>
+        )}
+        <div className="text-sm text-gray-400">
+          {watch("description")?.length || 0}/1000 characters
+        </div>
+      </div>
+
+      <input type="hidden" {...register("ordersChanged")} />
+      <input type="hidden" value={invoice.id} name="invoice-id" />
+
+      <div className="flex justify-end pt-3 gap-3 items-center">
+        <SaveButton
+          pendingLabel={"Saving..."}
+          disabled={!isDirty || Object.keys(errors).length > 0}
+        >
+          {invoice.id
+            ? isDirty
+              ? "Save and close"
+              : "Close"
+            : "Create and close"}
+        </SaveButton>
+      </div>
+    </form>
   );
 }
 

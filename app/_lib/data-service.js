@@ -4,20 +4,38 @@ import { format } from "date-fns";
 import { revalidatePath } from "next/cache";
 import { prisma } from "../_lib/prisma";
 
-export async function getOrders() {
+export async function getOrders(skip = 0, take = 10) {
   try {
-    return await prisma.order.findMany({
-      include: {
-        client: {
-          select: {
-            id: true,
-            name: true,
+    const [orders, totalCount] = await Promise.all([
+      prisma.order.findMany({
+        skip,
+        take,
+        include: {
+          client: {
+            select: {
+              id: true,
+              name: true,
+            },
           },
         },
-      },
-    });
+        orderBy: {
+          date: "desc",
+        },
+      }),
+      prisma.order.count(),
+    ]);
+
+    return {
+      orders,
+      totalCount,
+      hasMore: skip + take < totalCount,
+    };
   } catch (error) {
-    return [];
+    return {
+      orders: [],
+      totalCount: 0,
+      hasMore: false,
+    };
   }
 }
 
@@ -127,11 +145,30 @@ export async function getNewOrder() {
   };
 }
 
-export async function getClients() {
+export async function getClients(skip = 0, take = 10) {
   try {
-    return await prisma.client.findMany();
+    const [clients, totalCount] = await Promise.all([
+      prisma.client.findMany({
+        skip,
+        take,
+        orderBy: {
+          name: "asc", // Сортировка по имени
+        },
+      }),
+      prisma.client.count(),
+    ]);
+
+    return {
+      clients,
+      totalCount,
+      hasMore: skip + take < totalCount,
+    };
   } catch (error) {
-    return [];
+    return {
+      clients: [],
+      totalCount: 0,
+      hasMore: false,
+    };
   }
 }
 
@@ -157,20 +194,34 @@ export async function getNewClient() {
   };
 }
 
-export async function getInvoices() {
+export async function getInvoices(skip = 0, take = 10) {
   try {
-    return await prisma.invoice.findMany({
-      include: {
-        client: {
-          select: {
-            id: true,
-            name: true,
+    const [invoices, totalCount] = await Promise.all([
+      prisma.invoice.findMany({
+        skip,
+        take,
+        include: {
+          client: {
+            select: {
+              id: true,
+              name: true,
+            },
           },
         },
-      },
-    });
+        orderBy: {
+          date: "desc",
+        },
+      }),
+      prisma.invoice.count(),
+    ]);
+
+    return {
+      invoices,
+      totalCount,
+      hasMore: skip + take < totalCount,
+    };
   } catch (error) {
-    return [];
+    throw error;
   }
 }
 

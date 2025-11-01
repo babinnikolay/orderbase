@@ -22,8 +22,8 @@ const PrintInvoice = ({ invoice, onClose }) => {
           </div>
         </div>
       </div>
-      <div className="m-4 p-4 rounded-xl border border-primary-600 shadow-lg bg-primary-800 space-y-4 print:flex print:w-screen print:bg-white">
-        <div className="py-4 bg-primary-800 min-h-screen print-content print:bg-white">
+      <div className="m-4 p-4 rounded-xl border border-primary-600 shadow-lg bg-primary-800 space-y-4 print:flex print:bg-white">
+        <div className="py-4 bg-primary-800 print-content print:bg-white">
           <div className="border-b-2 print:border-black p-4">
             <h1 className="text-xl font-bold print:text-black">
               Invoice #{invoice.id} from {format(invoice.date, dateFormat)}

@@ -4,7 +4,7 @@ import SectionLabel from "@/app/_components/SectionLabel";
 import NewItemButton from "@/app/_components/NewItemButton";
 import ClientsList from "@/app/_components/ClientsList";
 
-export default async function Clients() {
+export default async function Clients({ searchParams }) {
   return (
     <div>
       <SectionLine>
@@ -13,7 +13,7 @@ export default async function Clients() {
       </SectionLine>
 
       <Suspense fallback={<div>Loading clients...</div>}>
-        <ClientsList />
+        <ClientsList searchParams={searchParams} />
       </Suspense>
     </div>
   );

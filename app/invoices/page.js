@@ -9,8 +9,8 @@ export async function generateMetadata() {
   };
 }
 
-function Page({ children }) {
-  return <Invoices />;
+function Page({ searchParams }) {
+  return <Invoices searchParams={searchParams} />;
 }
 
 export default Page;

@@ -3,14 +3,14 @@ import SectionLabel from "@/app/_components/SectionLabel";
 import SectionLine from "@/app/_components/SectionLine";
 import NewItemButton from "@/app/_components/NewItemButton";
 
-export default function Orders() {
+export default function Orders({ searchParams }) {
   return (
-    <div>
+    <div className="h-full">
       <SectionLine>
         <SectionLabel>Orders</SectionLabel>
         <NewItemButton href={"/orders/new"} title={"New order"} />
       </SectionLine>
-      <OrdersList />
+      <OrdersList searchParams={searchParams} />
     </div>
   );
 }

@@ -20,3 +20,4 @@ export const sideNavSections = [
   },
 ];
 export const dateFormat = "dd.MM.yyyy";
+export const ITEMS_PER_PAGE = 10;

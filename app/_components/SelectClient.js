@@ -3,7 +3,7 @@ import React from "react";
 const EMPTY_CLIENT_NAME = "--";
 
 function SelectClient({ clients, defaultId, disabled, onClientChange }) {
-  const changed = clients.slice();
+  const changed = clients.clients.slice();
   changed.unshift({ id: "", name: EMPTY_CLIENT_NAME });
 
   const handleChange = (e) => {

@@ -13,7 +13,7 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body className="bg-primary-950  text-primary-100 h-screen flex flex-col relative">
         <Header />
-        <main className="grid grid-cols-[220px_1fr] h-full">
+        <main className="grid grid-cols-[220px_1fr] h-full print:grid-cols-[1fr]">
           <Sidebar />
           {children}
         </main>

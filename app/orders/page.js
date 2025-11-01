@@ -8,6 +8,6 @@ export async function generateMetadata() {
   };
 }
 
-export default function Page() {
-  return <Orders />;
+export default function Page({ searchParams }) {
+  return <Orders searchParams={searchParams} />;
 }

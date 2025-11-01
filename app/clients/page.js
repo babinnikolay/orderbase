@@ -10,6 +10,6 @@ export async function generateMetadata() {
   };
 }
 
-export default async function Page() {
-  return <Clients />;
+export default async function Page({ searchParams }) {
+  return <Clients searchParams={searchParams} />;
 }

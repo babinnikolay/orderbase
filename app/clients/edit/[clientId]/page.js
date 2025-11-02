@@ -2,8 +2,8 @@ import React from "react";
 import SectionLabel from "@/app/_components/SectionLabel";
 import SectionLine from "@/app/_components/SectionLine";
 import ClientForm from "@/app/_components/client/ClientForm";
-import { getClient } from "@/app/_lib/data-service-orders";
 import BackButton from "@/app/_components/BackButton";
+import { getClient } from "@/app/_lib/data-service-clients";
 
 export default async function Page({ params }) {
   const client = await getClient(Number(params.clientId));

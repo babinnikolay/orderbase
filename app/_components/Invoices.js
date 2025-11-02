@@ -6,13 +6,13 @@ import InvoicesList from "@/app/_components/InvoicesList";
 
 function Invoices({ searchParams }) {
   return (
-    <>
+    <div>
       <SectionLine>
         <SectionLabel>Invoices</SectionLabel>
         <NewItemButton href={"/invoices/new"} title={"New invoice"} />
       </SectionLine>
       <InvoicesList searchParams={searchParams} />
-    </>
+    </div>
   );
 }
 

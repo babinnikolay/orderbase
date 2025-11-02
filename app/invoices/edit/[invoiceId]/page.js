@@ -17,7 +17,7 @@ export default async function Page({ params }) {
   ]);
 
   return (
-    <div>
+    <div className="h-screen">
       <SectionLine>
         <SectionLabel>
           Edit invoice #{invoice?.id} from {format(invoice.date, dateFormat)}

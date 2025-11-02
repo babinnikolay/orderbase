@@ -128,12 +128,14 @@ function InvoiceForm({ invoice, clients }) {
           />
         </div>
 
-        <div className="flex flex-col h-[82px]">
-          <div className="h-54 mt-auto flex p-2 px-2 rounded-xl border border-primary-600 hover:bg-primary-500 gap-2">
-            <Printer />
-            <button onClick={() => setPrintForm(true)}>Print preview</button>
+        {orders.length > 0 && invoice.id && (
+          <div className="flex flex-col h-[82px]">
+            <div className="h-54 mt-auto flex p-2 px-2 rounded-xl border border-primary-600 hover:bg-primary-500 gap-2">
+              <Printer />
+              <button onClick={() => setPrintForm(true)}>Print preview</button>
+            </div>
           </div>
-        </div>
+        )}
       </div>
 
       <div>

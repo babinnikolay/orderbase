@@ -3,7 +3,7 @@ export const APP_NAME = "Orderbase";
 export const APP_DESCRIPTION = "Create bills";
 export const sideNavSections = [
   {
-    href: "/",
+    href: "/dashboard",
     text: "📊 Dashboard",
   },
   {

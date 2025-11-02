@@ -4,6 +4,7 @@ import NewItemButton from "@/app/_components/NewItemButton";
 import SectionLine from "@/app/_components/SectionLine";
 import SalesChart from "@/app/_components/dashboard/SalesChart";
 import { getSales } from "@/app/_lib/data-service-orders";
+import EmptyList from "@/app/_components/EmptyList";
 
 async function Dashboard() {
   const sales = await getSales();
@@ -18,7 +19,13 @@ async function Dashboard() {
         </div>
       </SectionLine>
       <div className="flex flex-row gap-2 justify-center">
-        <SalesChart chartData={sales} />
+        {sales.length > 0 ? (
+          <SalesChart chartData={sales} />
+        ) : (
+          <div className="p-4 w-full">
+            <EmptyList name="sales" />
+          </div>
+        )}
       </div>
     </div>
   );

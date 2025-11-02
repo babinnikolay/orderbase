@@ -1,9 +1,6 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -13,15 +10,83 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String    @unique
+  emailVerified DateTime?
+  image         String?
+  password      String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  // Relations
+  accounts Account[]
+  sessions Session[]
+  clients  Client[]
+  invoices Invoice[]
+  orders   Order[]
+
+  @@map("user")
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String  @map("user_id")
+  type              String
+  provider          String
+  providerAccountId String  @map("provider_account_id")
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@map("accounts")
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique @map("session_token")
+  userId       String   @map("user_id")
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+  @@map("verification_tokens")
+}
+
 model Invoice {
   id          Int      @id @default(autoincrement())
   date        DateTime
   total       Float
   description String
   paid        Boolean  @default(false)
-  client      Client   @relation(fields: [clientId], references: [id])
-  orders      Order[]
-  clientId    Int
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  client   Client  @relation(fields: [clientId], references: [id])
+  orders   Order[]
+  clientId Int
+  userId   String
+  user     User    @relation(fields: [userId], references: [id])
+
+  @@index([userId])
+  @@map("invoice")
 }
 
 model Order {
@@ -29,15 +94,38 @@ model Order {
   date        DateTime
   amount      Float
   description String
-  client      Client   @relation(fields: [clientId], references: [id])
-  invoiceId   Int?
-  clientId    Int
-  Invoice     Invoice? @relation(fields: [invoiceId], references: [id])
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  client    Client   @relation(fields: [clientId], references: [id])
+  invoiceId Int?
+  clientId  Int
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  Invoice   Invoice? @relation(fields: [invoiceId], references: [id])
+
+  @@index([userId])
+  @@index([clientId])
+  @@map("order")
 }
 
 model Client {
-  id      Int       @id @default(autoincrement())
-  name    String
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String?
+  phone     String?
+  address   String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
   Invoice Invoice[]
   Order   Order[]
+  userId  String
+  user    User      @relation(fields: [userId], references: [id])
+
+  @@unique([userId, email])
+  @@index([userId])
+  @@map("client")
 }

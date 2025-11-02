@@ -181,7 +181,6 @@ export async function getSales() {
       }
       dateMap.get(dateKey).sales += order.amount;
     });
-    console.log(payments);
     payments.forEach((invoice) => {
       const dateKey = format(invoice.date, dateFormat);
       if (!dateMap.has(dateKey)) {

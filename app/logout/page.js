@@ -1,7 +1,7 @@
 import React from "react";
 
 function Page() {
-  return <div> Account page </div>;
+  return <div> logout </div>;
 }
 
 export default Page;

@@ -1,9 +1,10 @@
 import React from "react";
 import SectionLabel from "@/app/_components/SectionLabel";
 import SectionLine from "@/app/_components/SectionLine";
-import { getClients, getNewInvoice } from "@/app/_lib/data-service";
-import InvoiceForm from "@/app/_components/InvoiceForm";
+import InvoiceForm from "@/app/_components/order/InvoiceForm";
 import BackButton from "@/app/_components/BackButton";
+import { getNewInvoice } from "@/app/_lib/data-service-invoices";
+import { getClients } from "@/app/_lib/data-service-clients";
 
 export const revalidate = 0;
 

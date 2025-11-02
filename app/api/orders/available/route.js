@@ -1,4 +1,4 @@
-import { getAvailableOrders } from "@/app/_lib/data-service";
+import { getAvailableOrders } from "@/app/_lib/data-service-orders";
 
 export async function GET(request) {
   try {

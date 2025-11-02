@@ -3,10 +3,10 @@ import Table from "@/app/_components/Table";
 import TableHeader from "@/app/_components/TableHeader";
 import TableRow from "@/app/_components/TableRow";
 import ListButtons from "@/app/_components/ListButtons";
-import { getClients } from "@/app/_lib/data-service";
 import EmptyList from "@/app/_components/EmptyList";
 import { ITEMS_PER_PAGE } from "@/app/_helpers/appConstants";
 import PaginationBlock from "@/app/_components/PaginationBlock";
+import { getClients } from "@/app/_lib/data-service-clients";
 
 export default async function ClientsList({ searchParams }) {
   const currentPage = parseInt(searchParams?.page) || 1;

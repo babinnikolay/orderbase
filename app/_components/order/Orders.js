@@ -1,4 +1,4 @@
-import OrdersList from "@/app/_components/OrdersList";
+import OrdersList from "@/app/_components/order/OrdersList";
 import SectionLabel from "@/app/_components/SectionLabel";
 import SectionLine from "@/app/_components/SectionLine";
 import NewItemButton from "@/app/_components/NewItemButton";

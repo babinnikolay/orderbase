@@ -1,6 +1,6 @@
 import React from "react";
 import * as appConstants from "@/app/_helpers/appConstants";
-import Clients from "@/app/_components/Clients";
+import Clients from "@/app/_components/client/Clients";
 
 export const revalidate = 0;
 

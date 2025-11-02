@@ -1,6 +1,6 @@
 "use client";
 
-import ChosenOrders from "@/app/_components/ChosenOrders";
+import ChosenOrders from "@/app/_components/order/ChosenOrders";
 
 export default function InvoiceOrdersList({
   orders,

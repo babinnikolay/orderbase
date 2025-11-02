@@ -1,5 +1,5 @@
 import React from "react";
-import OrderChip from "@/app/_components/OrderChip";
+import OrderChip from "@/app/_components/order/OrderChip";
 import useSWR from "swr";
 import EmptyList from "@/app/_components/EmptyList";
 

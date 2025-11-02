@@ -2,7 +2,7 @@ import React, { Suspense } from "react";
 import SectionLine from "@/app/_components/SectionLine";
 import SectionLabel from "@/app/_components/SectionLabel";
 import NewItemButton from "@/app/_components/NewItemButton";
-import ClientsList from "@/app/_components/ClientsList";
+import ClientsList from "@/app/_components/client/ClientsList";
 
 export default async function Clients({ searchParams }) {
   return (

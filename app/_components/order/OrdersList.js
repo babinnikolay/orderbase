@@ -1,4 +1,4 @@
-import { getOrders } from "@/app/_lib/data-service";
+import { getOrders } from "@/app/_lib/data-service-orders";
 import TableHeader from "@/app/_components/TableHeader";
 import { format } from "date-fns";
 import { dateFormat, ITEMS_PER_PAGE } from "@/app/_helpers/appConstants";

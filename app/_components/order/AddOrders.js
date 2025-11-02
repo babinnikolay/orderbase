@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import Button from "@/app/_components/Button";
 import { BadgeMinus, Plus, Save } from "lucide-react";
-import AddOrdersList from "@/app/_components/AddOrdersList";
+import AddOrdersList from "@/app/_components/order/AddOrdersList";
 
 function AddOrders({ clientId, onAddOrders }) {
   const [addingMode, setAddingMode] = useState(false);

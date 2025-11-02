@@ -1,15 +1,10 @@
 "use server";
 
-import {
-  deleteClient,
-  deleteInvoice,
-  deleteOrder,
-  saveClient,
-  saveInvoice,
-  saveOrder,
-} from "@/app/_lib/data-service";
+import { deleteOrder, saveOrder } from "@/app/_lib/data-service-orders";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
+import { deleteClient, saveClient } from "@/app/_lib/data-service-clients";
+import { deleteInvoice, saveInvoice } from "@/app/_lib/data-service-invoices";
 
 export async function saveOrderAction(order) {
   await saveOrder(order);

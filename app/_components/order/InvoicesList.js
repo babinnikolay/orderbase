@@ -1,5 +1,4 @@
 import React from "react";
-import { getInvoices } from "@/app/_lib/data-service";
 import Table from "@/app/_components/Table";
 import TableHeader from "@/app/_components/TableHeader";
 import TableRow from "@/app/_components/TableRow";
@@ -8,6 +7,7 @@ import { dateFormat, ITEMS_PER_PAGE } from "@/app/_helpers/appConstants";
 import ListButtons from "@/app/_components/ListButtons";
 import EmptyList from "@/app/_components/EmptyList";
 import PaginationBlock from "@/app/_components/PaginationBlock";
+import { getInvoices } from "@/app/_lib/data-service-invoices";
 
 export default async function InvoicesList({ searchParams }) {
   const currentPage = parseInt(searchParams?.page) || 1;

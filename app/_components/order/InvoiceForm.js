@@ -3,7 +3,7 @@ import React, { useEffect, useState, useTransition } from "react";
 import SaveButton from "@/app/_components/SaveButton";
 import SelectClient from "@/app/_components/SelectClient";
 import SetPaidButton from "@/app/_components/SetPaidButton";
-import InvoiceOrdersList from "@/app/_components/InvoiceOrdersList";
+import InvoiceOrdersList from "@/app/_components/order/InvoiceOrdersList";
 import SingleDatePicker from "@/app/_components/SingleDatePicker";
 import PrintInvoice from "@/app/_components/PrintInvoice";
 import { Printer } from "lucide-react";

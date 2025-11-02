@@ -1,8 +1,8 @@
 import React from "react";
 import SectionLabel from "@/app/_components/SectionLabel";
 import SectionLine from "@/app/_components/SectionLine";
-import ClientForm from "@/app/_components/ClientForm";
-import { getClient } from "@/app/_lib/data-service";
+import ClientForm from "@/app/_components/client/ClientForm";
+import { getClient } from "@/app/_lib/data-service-orders";
 import BackButton from "@/app/_components/BackButton";
 
 export default async function Page({ params }) {

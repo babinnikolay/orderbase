@@ -1,8 +1,8 @@
 "use client";
 
-import OrderChip from "@/app/_components/OrderChip";
+import OrderChip from "@/app/_components/order/OrderChip";
 import React from "react";
-import AddOrders from "@/app/_components/AddOrders";
+import AddOrders from "@/app/_components/order/AddOrders";
 
 function calcTotal(orders) {
   return orders.reduce((sum, order) => sum + order.amount, 0);

@@ -1,9 +1,10 @@
 import React from "react";
-import OrderForm from "@/app/_components/OrderForm";
+import OrderForm from "@/app/_components/order/OrderForm";
 import SectionLabel from "@/app/_components/SectionLabel";
 import SectionLine from "@/app/_components/SectionLine";
-import { getClients, getNewOrder } from "@/app/_lib/data-service";
 import BackButton from "@/app/_components/BackButton";
+import { getClients } from "@/app/_lib/data-service-clients";
+import { getNewOrder } from "@/app/_lib/data-service-orders";
 
 export const revalidate = 0;
 

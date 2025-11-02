@@ -78,6 +78,7 @@ export const authConfig = {
   session: {
     strategy: "jwt",
   },
+  trustHost: process.env.NODE_ENV === "production" ? ["orderbase.ru"] : true,
 };
 
 export const { handlers, auth, signIn, signOut } = NextAuth(authConfig);

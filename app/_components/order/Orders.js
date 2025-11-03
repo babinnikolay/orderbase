@@ -5,7 +5,7 @@ import NewItemButton from "@/app/_components/NewItemButton";
 
 export default function Orders({ searchParams }) {
   return (
-    <div className="h-full">
+    <div className="">
       <SectionLine>
         <SectionLabel>Orders</SectionLabel>
         <NewItemButton href={"/orders/new"} title={"New order"} />

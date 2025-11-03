@@ -3,10 +3,14 @@
 import { format } from "date-fns";
 import { revalidatePath } from "next/cache";
 import { prisma } from "../_lib/prisma";
+import { auth } from "@/app/_lib/auth";
 
 export async function deleteInvoice(id) {
+  const session = await auth();
+  if (!session) return;
+
   try {
-    await prisma.invoice.delete({ where: { id } });
+    await prisma.invoice.delete({ where: { id, userId: session.user.id } });
     revalidatePath("/invoices");
   } catch (error) {
     throw error;
@@ -14,6 +18,9 @@ export async function deleteInvoice(id) {
 }
 
 export async function getInvoices(skip = 0, take = 10) {
+  const session = await auth();
+  if (!session) return;
+
   try {
     const [invoices, totalCount] = await Promise.all([
       prisma.invoice.findMany({
@@ -30,6 +37,7 @@ export async function getInvoices(skip = 0, take = 10) {
         orderBy: {
           date: "desc",
         },
+        where: { userId: session.user.id },
       }),
       prisma.invoice.count(),
     ]);
@@ -45,9 +53,12 @@ export async function getInvoices(skip = 0, take = 10) {
 }
 
 export async function getInvoice(id) {
+  const session = await auth();
+  if (!session) return;
+
   try {
     return prisma.invoice.findUnique({
-      where: { id },
+      where: { id, userId: session.user.id },
       include: {
         client: {
           select: {
@@ -71,6 +82,9 @@ export async function getInvoice(id) {
 }
 
 export async function saveInvoice(invoice) {
+  const session = await auth();
+  if (!session) return;
+
   if (!invoice.id) {
     try {
       await prisma.invoice.create({
@@ -80,6 +94,7 @@ export async function saveInvoice(invoice) {
           description: invoice.description,
           paid: invoice.paid,
           client: { connect: { id: invoice.client.id } },
+          user: { connect: { id: session.user.id } },
           orders: {
             connect: invoice.orders.map((order) => ({
               id: order.id,
@@ -100,6 +115,7 @@ export async function saveInvoice(invoice) {
           id: {
             notIn: keepOrders,
           },
+          userId: session.user.id,
         },
         data: {
           invoiceId: null,
@@ -112,6 +128,7 @@ export async function saveInvoice(invoice) {
             id: {
               in: keepOrders,
             },
+            userId: session.user.id,
             invoiceId: null,
           },
           data: {
@@ -121,7 +138,7 @@ export async function saveInvoice(invoice) {
       }
 
       await prisma.invoice.update({
-        where: { id: invoice.id },
+        where: { id: invoice.id, userId: session.user.id },
         data: {
           date: invoice.date,
           total: invoice.total,

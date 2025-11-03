@@ -4,6 +4,7 @@ import { useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import toast from "react-hot-toast";
 
 export default function SignIn() {
   const [email, setEmail] = useState("");
@@ -23,14 +24,12 @@ export default function SignIn() {
       });
 
       if (result?.error) {
-        alert("Invalid email or password");
+        toast.error("Invalid email or password");
       } else {
-        console.log("route to /");
         router.push("/dashboard");
       }
     } catch (error) {
-      console.error("Sign in error:", error);
-      alert("Sign in failed");
+      toast.error("Sign in failed");
     } finally {
       setLoading(false);
     }
@@ -46,7 +45,7 @@ export default function SignIn() {
           <p className="mt-2 text-center text-sm text-primary-200">
             Or{" "}
             <Link
-              href="/app/auth/signup"
+              href="/signup"
               className="font-medium text-primary-400 hover:text-primary-900"
             >
               create a new account

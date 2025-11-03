@@ -19,7 +19,7 @@ function Landing() {
       </div>
     );
 
-  if (session) router.push("/dashboard");
+  if (session && status === "authenticated") router.push("/dashboard");
 
   return (
     <div className="min-h-screen bg-primary-950 text-primary-100 flex flex-col">

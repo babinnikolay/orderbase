@@ -7,7 +7,7 @@ import { redirect } from "next/navigation";
 export const revalidate = 0;
 export async function generateMetadata() {
   return {
-    title: `Invoices ${appConstants.TITLE_SEPARATOR} ${appConstants.APP_NAME}`,
+    title: `Invoices${appConstants.TITLE_SEPARATOR}${appConstants.APP_NAME}`,
   };
 }
 

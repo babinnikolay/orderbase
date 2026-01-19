@@ -2,10 +2,12 @@ import React from "react";
 import OrderChip from "@/app/_components/order/OrderChip";
 import useSWR from "swr";
 import EmptyList from "@/app/_components/EmptyList";
+import { ListPlus } from "lucide-react";
+import Button from "@/app/_components/Button";
 
 const fetcher = (url) => fetch(url).then((res) => res.json());
 
-function AddOrdersList({ onSelect, clientId }) {
+function AddOrdersList({ onSelect, resetCount, okAction, clientId }) {
   const {
     data: orders,
     error,
@@ -25,17 +27,32 @@ function AddOrdersList({ onSelect, clientId }) {
     );
 
   return (
-    <div className=" absolute flex flex-wrap gap-2 p-2 border bg-primary-600 rounded-xl min-h-min">
-      {orders.map((order, index) => (
-        <OrderChip
-          key={index}
-          order={order}
-          selectable={true}
-          deletable={false}
-          onSelect={onSelect}
-        />
-      ))}
-    </div>
+    <>
+      <div className=" absolute flex flex-wrap gap-2 p-2 border bg-primary-600 rounded-xl min-h-min">
+        <Button
+          onClick={() => {
+            resetCount();
+            orders.map((order) => {
+              onSelect(order, true);
+            });
+            okAction();
+          }}
+        >
+          <div className="flex items-center justify-center gap-1">
+            <ListPlus /> Select all
+          </div>
+        </Button>
+        {orders.map((order, index) => (
+          <OrderChip
+            key={index}
+            order={order}
+            selectable={true}
+            deletable={false}
+            onSelect={onSelect}
+          />
+        ))}
+      </div>
+    </>
   );
 }
 

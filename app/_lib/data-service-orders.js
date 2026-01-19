@@ -168,6 +168,12 @@ export async function getSales() {
         select: {
           date: true,
           total: true,
+          client: {
+            select: {
+              id: true,
+              name: true,
+            },
+          },
         },
         orderBy: {
           date: "asc",
@@ -184,6 +190,12 @@ export async function getSales() {
         select: {
           date: true,
           amount: true,
+          client: {
+            select: {
+              id: true,
+              name: true,
+            },
+          },
         },
         orderBy: {
           date: "asc",
@@ -191,34 +203,49 @@ export async function getSales() {
       }),
     ]);
 
-    const dateMap = new Map();
+    const clientDateMap = new Map();
 
     sales.forEach((order) => {
       const dateKey = format(order.date, dateFormat);
-      if (!dateMap.has(dateKey)) {
-        dateMap.set(dateKey, {
+      const clientId = order.client?.id || "no-client";
+      const key = `${dateKey}_${clientId}`;
+
+      if (!clientDateMap.has(key)) {
+        clientDateMap.set(key, {
           date: dateKey,
+          clientId: clientId,
+          clientName: order.client?.name || "Без клиента",
           sales: 0,
           payments: 0,
         });
       }
-      dateMap.get(dateKey).sales += order.amount;
-    });
-    payments.forEach((invoice) => {
-      const dateKey = format(invoice.date, dateFormat);
-      if (!dateMap.has(dateKey)) {
-        dateMap.set(dateKey, {
-          date: dateKey,
-          sales: 0,
-          payments: 0,
-        });
-      }
-      dateMap.get(dateKey).payments += invoice.total;
+      clientDateMap.get(key).sales += order.amount;
     });
 
-    return Array.from(dateMap.values()).sort(
-      (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime(),
-    );
+    payments.forEach((invoice) => {
+      const dateKey = format(invoice.date, dateFormat);
+      const clientId = invoice.client?.id || "no-client";
+      const key = `${dateKey}_${clientId}`;
+
+      if (!clientDateMap.has(key)) {
+        clientDateMap.set(key, {
+          date: dateKey,
+          clientId: clientId,
+          clientName: invoice.client?.name || "Без клиента",
+          sales: 0,
+          payments: 0,
+        });
+      }
+      clientDateMap.get(key).payments += invoice.total;
+    });
+
+    return Array.from(clientDateMap.values()).sort((a, b) => {
+      const dateCompare =
+        new Date(a.date).getTime() - new Date(b.date).getTime();
+      if (dateCompare !== 0) return dateCompare;
+
+      return a.clientName.localeCompare(b.clientName);
+    });
   } catch (error) {
     console.error("Error fetching chart data:", error);
     throw error;

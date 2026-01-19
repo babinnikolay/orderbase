@@ -5,7 +5,7 @@ import { Bar, BarChart, CartesianGrid, Tooltip } from "recharts";
 function SalesChart({ chartData }) {
   return (
     <div className="w-full">
-      <p className="pl-6 pb-2 text-2xl">
+      <p className="pl-6 pb-2 text-xl">
         Sales and payments for the last 30 days
       </p>
       <BarChart width="100%" height={300} data={chartData} responsive>

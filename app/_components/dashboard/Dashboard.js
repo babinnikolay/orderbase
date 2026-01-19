@@ -2,12 +2,12 @@ import React from "react";
 import SectionLabel from "@/app/_components/SectionLabel";
 import NewItemButton from "@/app/_components/NewItemButton";
 import SectionLine from "@/app/_components/SectionLine";
-import { getSales } from "@/app/_lib/data-service-orders";
+import { getDashboardData } from "@/app/_lib/data-service-orders";
 import WidgetSalesByClients from "@/app/_components/dashboard/WidgetSalesByClients";
 import WidgetSalesChart from "@/app/_components/dashboard/WidgetSalesChart";
 
 async function Dashboard() {
-  const sales = await getSales();
+  const data = await getDashboardData();
 
   return (
     <div>
@@ -19,11 +19,11 @@ async function Dashboard() {
         </div>
       </SectionLine>
       <div className="flex flex-row gap-2 justify-start">
-        <WidgetSalesByClients sales={sales} />
+        <WidgetSalesByClients data={data.summaryByClient} />
       </div>
 
       <div className="flex flex-row gap-2 justify-center">
-        <WidgetSalesChart sales={sales} />
+        <WidgetSalesChart data={data.detailedByDateAndClient} />
       </div>
     </div>
   );

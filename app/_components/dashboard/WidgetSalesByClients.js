@@ -4,29 +4,7 @@ import TableHeader from "@/app/_components/TableHeader";
 import TableRow from "@/app/_components/TableRow";
 import EmptyList from "@/app/_components/EmptyList";
 
-function WidgetSalesByClients({ sales }) {
-  const salesByClients = new Map();
-
-  sales.forEach((value) => {
-    const clientKey = value.clientName;
-
-    if (!salesByClients.has(clientKey)) {
-      salesByClients.set(clientKey, {
-        clientName: clientKey,
-        sales: 0,
-        payments: 0,
-      });
-    }
-
-    const clientSummary = salesByClients.get(clientKey);
-    clientSummary.sales += value.sales;
-    clientSummary.payments += value.payments;
-  });
-
-  const clientSummary = Array.from(salesByClients.values()).sort((a, b) =>
-    a.clientName.localeCompare(b.clientName),
-  );
-
+function WidgetSalesByClients({ data }) {
   return (
     <div className="flex flex-col items-left justify-center">
       <p className="pl-6 pb-2 text-xl">Sales by clients for the last 90 days</p>
@@ -37,13 +15,13 @@ function WidgetSalesByClients({ sales }) {
           <div className="flex-none w-32">Payment</div>
           <div className="flex-none w-32">Debt</div>
         </TableHeader>
-        {clientSummary.length > 0 ? (
-          clientSummary.map((sale, index) => (
+        {data.length > 0 ? (
+          data.map((sale, index) => (
             <TableRow key={index}>
               <div className="flex-none w-60">{sale.clientName}</div>
-              <div className="flex-none w-32">{sale.sales}</div>
-              <div className="flex-none w-32">{sale.payments}</div>
-              <div className="flex-none w-32">{sale.sales - sale.payments}</div>
+              <div className="flex-none w-32">{sale.totalSales}</div>
+              <div className="flex-none w-32">{sale.totalPayments}</div>
+              <div className="flex-none w-32">{sale.debt}</div>
             </TableRow>
           ))
         ) : (

@@ -146,106 +146,121 @@ export async function getNewOrder() {
   };
 }
 
-export async function getSales() {
+export async function getDashboardData() {
   const session = await auth();
   if (!session) return;
 
   const currentDate = new Date();
-  const thirtyDaysAgo = new Date();
-  thirtyDaysAgo.setDate(currentDate.getDate() - 90);
+  const ninetyDaysAgo = new Date();
+  ninetyDaysAgo.setDate(currentDate.getDate() - 90);
 
   try {
     const [payments, sales] = await Promise.all([
       prisma.invoice.findMany({
         where: {
           paid: true,
-          date: {
-            gte: thirtyDaysAgo,
-            lte: currentDate,
-          },
+          date: { gte: ninetyDaysAgo, lte: currentDate },
           userId: session.user.id,
         },
         select: {
           date: true,
           total: true,
-          client: {
-            select: {
-              id: true,
-              name: true,
-            },
-          },
+          client: { select: { id: true, name: true } },
         },
-        orderBy: {
-          date: "asc",
-        },
+        orderBy: { date: "asc" },
       }),
       prisma.order.findMany({
         where: {
-          date: {
-            gte: thirtyDaysAgo,
-            lte: currentDate,
-          },
+          date: { gte: ninetyDaysAgo, lte: currentDate },
           userId: session.user.id,
         },
         select: {
           date: true,
           amount: true,
-          client: {
-            select: {
-              id: true,
-              name: true,
-            },
-          },
+          client: { select: { id: true, name: true } },
         },
-        orderBy: {
-          date: "asc",
-        },
+        orderBy: { date: "asc" },
       }),
     ]);
 
     const clientDateMap = new Map();
+    const clientTotalMap = new Map();
 
-    sales.forEach((order) => {
-      const dateKey = format(order.date, dateFormat);
-      const clientId = order.client?.id || "no-client";
-      const key = `${dateKey}_${clientId}`;
+    // Вспомогательная функция для обработки данных
+    const processRecord = (date, amount, client, isSale) => {
+      const dateKey = format(date, dateFormat);
+      const clientId = client?.id || "no-client";
+      const clientName = client?.name || "Без клиента";
 
-      if (!clientDateMap.has(key)) {
-        clientDateMap.set(key, {
+      // Детализированные данные (по дате и клиенту)
+      const dateClientKey = `${dateKey}_${clientId}`;
+      if (!clientDateMap.has(dateClientKey)) {
+        clientDateMap.set(dateClientKey, {
           date: dateKey,
-          clientId: clientId,
-          clientName: order.client?.name || "Без клиента",
+          clientId,
+          clientName,
           sales: 0,
           payments: 0,
         });
       }
-      clientDateMap.get(key).sales += order.amount;
-    });
 
-    payments.forEach((invoice) => {
-      const dateKey = format(invoice.date, dateFormat);
-      const clientId = invoice.client?.id || "no-client";
-      const key = `${dateKey}_${clientId}`;
+      const dateClientData = clientDateMap.get(dateClientKey);
+      if (isSale) {
+        dateClientData.sales += amount;
+      } else {
+        dateClientData.payments += amount;
+      }
 
-      if (!clientDateMap.has(key)) {
-        clientDateMap.set(key, {
-          date: dateKey,
-          clientId: clientId,
-          clientName: invoice.client?.name || "Без клиента",
-          sales: 0,
-          payments: 0,
+      // Суммарные данные (только по клиенту)
+      if (!clientTotalMap.has(clientId)) {
+        clientTotalMap.set(clientId, {
+          clientId,
+          clientName,
+          totalSales: 0,
+          totalPayments: 0,
         });
       }
-      clientDateMap.get(key).payments += invoice.total;
-    });
 
-    return Array.from(clientDateMap.values()).sort((a, b) => {
-      const dateCompare =
-        new Date(a.date).getTime() - new Date(b.date).getTime();
-      if (dateCompare !== 0) return dateCompare;
+      const clientData = clientTotalMap.get(clientId);
+      if (isSale) {
+        clientData.totalSales += amount;
+      } else {
+        clientData.totalPayments += amount;
+      }
+    };
 
-      return a.clientName.localeCompare(b.clientName);
-    });
+    // Обработка продаж
+    sales.forEach((order) =>
+      processRecord(order.date, order.amount, order.client, true),
+    );
+
+    // Обработка платежей
+    payments.forEach((invoice) =>
+      processRecord(invoice.date, invoice.total, invoice.client, false),
+    );
+
+    // Формирование результатов
+    const detailedByDateAndClient = Array.from(clientDateMap.values()).sort(
+      (a, b) => {
+        const dateCompare =
+          new Date(a.date).getTime() - new Date(b.date).getTime();
+        return dateCompare !== 0
+          ? dateCompare
+          : a.clientName.localeCompare(b.clientName);
+      },
+    );
+
+    const summaryByClient = Array.from(clientTotalMap.values())
+      .map((client) => ({
+        ...client,
+        debt: client.totalSales - client.totalPayments,
+      }))
+      .sort((a, b) => a.clientName.localeCompare(b.clientName));
+
+    return {
+      detailedByDateAndClient,
+      summaryByClient,
+    };
   } catch (error) {
     console.error("Error fetching chart data:", error);
     throw error;

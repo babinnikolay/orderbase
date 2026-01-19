@@ -29,7 +29,7 @@ function WidgetSalesByClients({ sales }) {
 
   return (
     <div className="flex flex-col items-left justify-center">
-      <p className="pl-6 pb-2 text-xl">Sales by clients for the last 30 days</p>
+      <p className="pl-6 pb-2 text-xl">Sales by clients for the last 90 days</p>
       <Table>
         <TableHeader>
           <div className="flex-none w-60">Client</div>

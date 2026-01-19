@@ -3,8 +3,8 @@ import SectionLabel from "@/app/_components/SectionLabel";
 import NewItemButton from "@/app/_components/NewItemButton";
 import SectionLine from "@/app/_components/SectionLine";
 import { getSales } from "@/app/_lib/data-service-orders";
-import WidgetSalesByClients from "@/app/_components/WidgetSalesByClients";
-import WidgetSalesChart from "@/app/_components/WidgetSalesChart";
+import WidgetSalesByClients from "@/app/_components/dashboard/WidgetSalesByClients";
+import WidgetSalesChart from "@/app/_components/dashboard/WidgetSalesChart";
 
 async function Dashboard() {
   const sales = await getSales();

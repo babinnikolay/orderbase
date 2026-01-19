@@ -6,7 +6,7 @@ function SalesChart({ chartData }) {
   return (
     <div className="w-full">
       <p className="pl-6 pb-2 text-xl">
-        Sales and payments for the last 30 days
+        Sales and payments for the last 90 days
       </p>
       <BarChart width="100%" height={300} data={chartData} responsive>
         <CartesianGrid strokeDasharray="3 3" />

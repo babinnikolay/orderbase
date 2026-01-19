@@ -152,7 +152,7 @@ export async function getSales() {
 
   const currentDate = new Date();
   const thirtyDaysAgo = new Date();
-  thirtyDaysAgo.setDate(currentDate.getDate() - 30);
+  thirtyDaysAgo.setDate(currentDate.getDate() - 90);
 
   try {
     const [payments, sales] = await Promise.all([
